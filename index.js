@@ -19,7 +19,7 @@ function rallybot(req, res, next)
 
     //{text: 'Hi ' + hook.user_name, username: 'rallybot', icon_emoji: ':nerd:'}
     
-    res.json(200, { text: message, username: 'rallybot', icon_emoji: ':nerd:'});
+    res.json(200, { text: message, channel: REQUEST.body.channel_name});
     
     next();
 }
