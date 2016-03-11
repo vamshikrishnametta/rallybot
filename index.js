@@ -23,6 +23,9 @@ bot.on('start', function() {
 });
 
 bot.on('message', function(data) {
+    
+    console.log(data);
+
     var params = {
         icon_emoji: ':nerd:'
     };
