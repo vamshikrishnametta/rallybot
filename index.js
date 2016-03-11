@@ -25,11 +25,17 @@ app.post('/rallybot', function(req, res){
   var buildStatus = req.body.build ? req.body.build.buildStatus : 'No build status';
   var buildLink = req.body.build ? req.body.build.buildStatusUrl : 'No build link';
 
-  // var text = teamcityText;
-  // text += '\nStatus: ' + buildStatus;
-  // text += '\n<' + buildLink + '|Build>';
+  var text = teamcityText;
+  text += '\nStatus: ' + buildStatus;
+  text += '\n<' + buildLink + '|Build>';
 
-  var json = {text: 'Hi ' + hook.user_name, username: 'rallybot', icon_emoji: ':nerd:'};
+  // var json = {text: 'Hi ' + hook.user_name, username: 'rallybot', icon_emoji: ':nerd:'};
+  var json = {
+    text: text,
+    channel: '#test-int',
+    username: 'rallybot'
+  };
+
 
   slackhook.send(json, function(err, res){
     console.log(err, res);
