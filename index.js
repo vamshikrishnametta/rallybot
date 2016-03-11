@@ -54,7 +54,7 @@ app.post('/rallyslash', function(req, res){
                 console.log(errors);
             });
 
-        }else(){
+        }else{
             json.message = 'Use format: /rally US123 action'
             res.send(json);
         }
