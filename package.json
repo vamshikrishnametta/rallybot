@@ -18,7 +18,6 @@
   },
   "homepage": "https://github.com/tjmadsen/rallybot",
   "dependencies": {
-    "express": "^4.13.4",
     "rally": "^0.2.0",
     "restify": "^4.0.4",
     "slackbots": "^0.5.1",
