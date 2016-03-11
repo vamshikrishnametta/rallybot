@@ -21,7 +21,7 @@ app.post('/rallybot', function(req, res){
   text += '\nStatus: ' + buildStatus;
   text += '\n<' + buildLink + '|Build>';
 
-  var json = {text: 'Hi ' + hook.user_name, username: 'rallybot', icon_emoji: ':nerd:'};
+  var json = {text: 'Hi ' + req.body.user_name, username: 'rallybot', icon_emoji: ':nerd:'};
   // var json = {
   //   text: text,
   //   channel: '#test-int',
