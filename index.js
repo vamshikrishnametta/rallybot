@@ -1,4 +1,5 @@
-var express = require('express');
+var express = require('express'),
+    bodyParser = require('body-parser');
 var Slackhook = require('slackhook');
 var slackhook = new Slackhook({
     domain: process.env.DOMAIN,
@@ -6,8 +7,8 @@ var slackhook = new Slackhook({
 }); 
 var app = express();
 
-app.use(express.urlencoded());
-app.use(express.json());
+app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.json());
 
 app.post('/rallybot', function(req, res){
   if( !(req.body && req.body instanceof Object && Object.keys(req.body).length > 0) ) return res.send(403);
