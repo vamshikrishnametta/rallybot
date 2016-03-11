@@ -19,7 +19,8 @@
   "homepage": "https://github.com/tjmadsen/rallybot",
   "dependencies": {
     "rally": "^0.2.0",
-    "slackbots": "^0.5.1"
+    "slackbots": "^0.5.1",
+    "slackhook": "^1.0.0"
   },
   "engines": {
     "node": "0.10.x"
