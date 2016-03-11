@@ -1,0 +1,23 @@
+{
+  "name": "rallybot",
+  "version": "1.0.0",
+  "description": "Rally Bot",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tjmadsen/rallybot.git"
+  },
+  "author": "TJ Madsen",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tjmadsen/rallybot/issues"
+  },
+  "homepage": "https://github.com/tjmadsen/rallybot",
+  "dependencies": {
+    "rally": "^0.2.0",
+    "slackbots": "^0.5.1"
+  }
+}
