@@ -44,9 +44,10 @@ app.post('/rallyslash', function(req, res){
             }).then(function(result) {
                 console.log(result.Object);
                 if(token[1] == 'description'){
-                    json.message = result.Object.Description    
+                    // json.message = result.Object.Description;
+                    json.message = token[0]+' Description';
                 }else{
-                    json.message = '<https://rally1.rallydev.com/#/'+process.env.RALLY_WORKSPACE+'/search?keywords='+token[0]+'>'
+                    json.message = '<https://rally1.rallydev.com/#/'+process.env.RALLY_WORKSPACE+'/search?keywords='+token[0]+'>';
                 }
                 
             res.send(json);
