@@ -14,7 +14,7 @@ app.post('/rallybot', function(req, res){
   if( !(req.body && req.body instanceof Object && Object.keys(req.body).length > 0) ) return res.send(403);
 
     if(req.body.token == process.env.BOT_TOKEN){
-        var json = {text: 'Test Response', username: 'rallybot', icon_emoji: ':nerd:'};
+        var json = {text: req.body, username: 'rallybot', icon_emoji: ':nerd:'};
         if(req.body.channel_id != null){
             json.channel = req.body.channel_id; 
         }else if(req.body.team_id != null){
