@@ -23,6 +23,9 @@ bot.on('start', function() {
 });
 
 bot.on('message', function(data) {
+    var params = {
+        icon_emoji: ':nerd:'
+    };
     // all ingoing events https://api.slack.com/rtm 
     if(data.channel_id != null){
         bot.postMessage(data.channel_id, 'hellooo!', params); 
