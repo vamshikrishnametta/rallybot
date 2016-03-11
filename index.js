@@ -29,13 +29,13 @@ app.post('/rallybot', function(req, res){
   // };
 
 
-  slackhook.send(json, function(err, res){
-    console.log(err, res);
-  });
+  // slackhook.send(json, function(err, res){
+  //   console.log(err, res);
+  // });
 
   // res.body('Test');
 
-  res.send(200);
+  res.send(json);
 });
 
 app.get('/', function(req, res){
