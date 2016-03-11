@@ -32,6 +32,7 @@ app.post('/rallybot', function(req, res){
   slackhook.send(json, function(err, res){
     console.log(err, res);
   });
+
   // res.body('Test');
 
   res.send(200);
