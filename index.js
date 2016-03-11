@@ -34,8 +34,12 @@ app.post('/rallyslash', function(req, res){
             json.message = 'Use format: /rally US123 action\n\n Possible Actions: \n status \n description \n link \n notes';
             res.send(json);
         }else if((tokens[0].substr(0,2) == 'US' || tokens[0].substr(0,2) == 'DE') && !isNaN(tokens[0].substring(1,tokens[0].lenth - 1))){
+            // json.message = '<https://rally1.rallydev.com/#/'+process.env.RALLY_WORKSPACE+'/search?keywords='+token[0]+'>';
+            // res.send(json);
+            json.message = 'US-'+tokens[0].substring(1,tokens[0].lenth - 1);
+            res.send(json);
             restApi.get({
-                ref: tokens[0], //may be a ref ('/defect/1234') or an object with a _ref property
+                ref: 'userstory/'+tokens[0], //may be a ref ('/defect/1234') or an object with a _ref property
                 fetch: ['FormattedID', 'Name', 'Description'], //fields to fetch
                 // scope: {
                     // workspace: '/workspace/12345' //optional, only required if reading in non-default workspace
@@ -50,7 +54,7 @@ app.post('/rallyslash', function(req, res){
                     json.message = '<https://rally1.rallydev.com/#/'+process.env.RALLY_WORKSPACE+'/search?keywords='+token[0]+'>';
                 }
                 
-            res.send(json);
+                res.send(json);
             }).fail(function(errors) {
                 console.log(errors);
             });
