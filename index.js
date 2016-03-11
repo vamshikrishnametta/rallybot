@@ -28,7 +28,8 @@ bot.on('message', function(data) {
     };
     // all ingoing events https://api.slack.com/rtm 
     if(data.channel_id != null){
-        bot.postMessage(data.channel_id, 'hellooo!', params); 
+        bot.postMessageToChannel('data.channel_name', 'meow!', params);
+        // bot.postMessage(data.channel_id, 'hellooo!', params); 
     }else if(data.team_id != null){
         bot.postMessage(data.team_id, 'hellooo!', params); 
     }else if(data.user_id != null){
