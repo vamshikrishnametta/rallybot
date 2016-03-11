@@ -21,3 +21,16 @@ bot.on('start', function() {
     // define private group instead of 'private_group', where bot exist 
     //bot.postMessageToGroup('private_group', 'meow!', params); 
 });
+
+bot.on('message', function(data) {
+    // all ingoing events https://api.slack.com/rtm 
+    if(data.channel_id != null){
+        bot.postMessage(data.channel_id, 'hellooo!', params); 
+    }else if(data.team_id != null){
+        bot.postMessage(data.team_id, 'hellooo!', params); 
+    }else if(data.user_id != null){
+        bot.postMessage(data.user_id, 'hellooo!', params); 
+    }
+    
+
+});
