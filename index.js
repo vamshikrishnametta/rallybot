@@ -1,6 +1,7 @@
 var express = require('express'),
     bodyParser = require('body-parser');
 var rally = require('rally');
+var request = require('request');
 var app = express();
 
 app.use(bodyParser.urlencoded({extended: true}));
@@ -51,11 +52,17 @@ app.post('/rallyslash', function(req, res){
                 if(token[1] == 'description'){
                     // json.message = result.Object.Description;
                     json.message = token[0]+' Description';
+
                 }else{
                     json.message = '<https://rally1.rallydev.com/#/'+process.env.RALLY_WORKSPACE+'/search?keywords='+token[0]+'>';
                 }
                 
-                res.send(json);
+                request(req.body.response_url, function (error, response, json) {
+                  if (!error && response.statusCode == 200) {
+                    console.log(body) // Print the google web page.
+                  }
+                })
+                res.sendStatus(200);
             }).fail(function(errors) {
                 console.log(errors);
             });
