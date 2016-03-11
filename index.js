@@ -26,14 +26,16 @@ bot.on('message', function(data) {
     var params = {
         icon_emoji: ':nerd:'
     };
+    bot.postMessageToChannel('test-int', 'meow!', params);
     // all ingoing events https://api.slack.com/rtm 
     if(data.channel_id != null){
-        bot.postMessageToChannel('data.channel_name', 'meow!', params);
+        
+        // bot.postMessageToChannel('data.channel_name', 'meow!', params);
         // bot.postMessage(data.channel_id, 'hellooo!', params); 
     }else if(data.team_id != null){
-        bot.postMessage(data.team_id, 'hellooo!', params); 
+        // bot.postMessage(data.team_id, 'hellooo!', params); 
     }else if(data.user_id != null){
-        bot.postMessage(data.user_id, 'hellooo!', params); 
+        // bot.postMessage(data.user_id, 'hellooo!', params); 
     }
     
 
