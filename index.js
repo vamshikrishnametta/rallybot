@@ -26,14 +26,15 @@ app.post('/rallyslash', function(req, res){
     var text
 
     if(req.body.token == process.env.BOT_TOKEN){
-        var message = '';
+        var message = ' ';
         var json = json = {text: message, username: 'rallybot', icon_emoji: ':nerd:'};
         var text = req.body.text;
+        console.log(req.body);
         var tokens = text.split(" ");
         if(tokens[0] == 'help'){
             json.message = 'Use format: /rally US123 action\n\n Possible Actions: \n status \n description \n link \n notes';
             res.send(json);
-        }else if((tokens[0].substr(0,2) == 'US' || tokens[0].substr(0,2) == 'DE') && !isNaN(tokens[0].substring(1,tokens[0].lenth - 1))){
+        }else if((tokens[0].substr(0,2) == 'US' || tokens[0].substr(0,2) == 'DE') && !isNaN(tokens[0].substring(2,tokens[0].length - 1))){
             // json.message = '<https://rally1.rallydev.com/#/'+process.env.RALLY_WORKSPACE+'/search?keywords='+token[0]+'>';
             // res.send(json);
             json.message = 'US-'+tokens[0].substring(1,tokens[0].lenth - 1);
@@ -60,6 +61,8 @@ app.post('/rallyslash', function(req, res){
             });
 
         }else{
+            console.log(tokens[0].substr(0,2) );
+            console.log('US-'+tokens[0].substring(2,tokens[0].length - 1));
             json.message = 'Use format: /rally US123 action'
             res.send(json);
         }
