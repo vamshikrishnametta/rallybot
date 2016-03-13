@@ -23,9 +23,9 @@ var restApi = rally({
    });
 
 var removeHTML = function(inText){
-  inText.replace('<div>', '\n');
-  inText.replace('</div>', '');
-
+  inText = inText.replace('<div>', '\n');
+  inText = inText.replace('</div>', '');
+  return inText;
 }
 
 
