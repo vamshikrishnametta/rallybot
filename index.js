@@ -85,8 +85,8 @@ app.post('/rallyslash', function(req, res){
                 }else if(tokens[1] == 'status' || tokens[1] == 's'){
                     // json.message = result.Object.Description;
                     json.text = '*'+tokens[0]+' - '+result.Results[0].Name+':*';
-                    json.text += '\n Release: '+result.Results[0].Release.Name;
-                    json.text += '\n Iteration: '+result.Results[0].Iteration.Name;
+                    json.text += '\n Release: '+result.Results[0].Release;
+                    json.text += '\n Iteration: '+result.Results[0].Iteration;
                     json.text += '\n Comm Ex Owner: '+result.Results[0].c_CommExOwner;
                     json.text += '\n Status: '+result.Results[0].c_UserStoryStatus;
                     json.text += '\n Comm Ex IT Owner: '+result.Results[0].c_CommexITOwner;
