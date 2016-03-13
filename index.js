@@ -54,10 +54,10 @@ app.post('/rallyslash', function(req, res){
                 // },
                 requestOptions: {} //optional additional options to pass through to request
             };
-            console.log(rallyReqBody);
+            // console.log(rallyReqBody);
             restApi.query(rallyReqBody).then(function(result) {
-                console.log(result);
-                console.log(result.Results);
+                //console.log(result);
+                // console.log(result.Results);
                 if(tokens[1] == 'description'){
                     // json.message = result.Object.Description;
                     json.message = tokens[0]+' - '+result.Results[0].Name+': \n'+result.Results[0].Description;
@@ -65,20 +65,20 @@ app.post('/rallyslash', function(req, res){
                 }else{
                     json.message = '<https://rally1.rallydev.com/#/'+process.env.RALLY_WORKSPACE+'/search?keywords='+tokens[0]+'>';
                 }
-                
-                request(req.body.response_url, function (error, response, json) {
-                  if (!error && response.statusCode == 200) {
-                    console.log('Sent back to Slack') // Print the google web page.
-                  }
-                })
+                res.send(json);
+                // request('http://google.com', function (error, response, json) {
+                //   if (!error && response.statusCode == 200) {
+                //     console.log('Sent back to Slack'); // Print the google web page.
+                //   }
+                // })
                 res.sendStatus(200);
             }).fail(function(errors) {
                 console.log(errors);
             });
 
         }else{
-            console.log(tokens[0].substr(0,2) );
-            console.log('US-'+tokens[0].substring(2,tokens[0].length - 1));
+            // console.log(tokens[0].substr(0,2) );
+            // console.log('US-'+tokens[0].substring(2,tokens[0].length - 1));
             json.message = 'Use format: /rally US123 action'
             res.send(json);
         }
