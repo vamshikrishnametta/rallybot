@@ -59,15 +59,15 @@ app.post('/rallyslash', function(req, res){
                 // console.log(result.Results);
                 if(tokens[1] == 'description'){
                     // json.message = result.Object.Description;
-                    json.text = '*bold*'+tokens[0]+' - '+result.Results[0].Name+':*bold* \n>'+result.Results[0].Description;
+                    json.text = '*'+tokens[0]+' - '+result.Results[0].Name+':* \n>'+result.Results[0].Description;
 
                 }else if(tokens[1] == 'notes'){
                     // json.message = result.Object.Description;
-                    json.text = '*bold*'+tokens[0]+' - '+result.Results[0].Name+':*bold* \n_Notes_\n>'+result.Results[0].Notes;
+                    json.text = '*'+tokens[0]+' - '+result.Results[0].Name+':* \n_Notes_\n>'+result.Results[0].Notes;
 
                 }else if(tokens[1] == 'status'){
                     // json.message = result.Object.Description;
-                    json.text = '*bold*'+tokens[0]+' - '+result.Results[0].Name+':*bold*';
+                    json.text = '*'+tokens[0]+' - '+result.Results[0].Name+':*';
                     json.text += '\n Release: '+result.Results[0].Release;
                     json.text += '\n Iteration: '+result.Results[0].Iteration;
                     json.text += '\n Comm Ex Owner: '+result.Results[0].CommExOwner;
