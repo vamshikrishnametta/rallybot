@@ -31,6 +31,7 @@ var removeHTML = function(inText){
   outText = outText.replace(/<\/b>/g, '*');
   outText = outText.replace(/<i>/g, '_');
   outText = outText.replace(/<\/i>/g, '_');
+  outText = outText.replace(/<br \/>/g, '\n');
   return outText+'test';
 }
 
@@ -76,6 +77,10 @@ app.post('/rallyslash', function(req, res){
                 }else if(tokens[1] == 'notes' || tokens[1] == 'n'){
                     // json.message = result.Object.Description;
                     json.text = '*'+tokens[0]+' - '+result.Results[0].Name+':* \n_Notes_\n>>>'+removeHTML(result.Results[0].Notes);
+
+                }else if(tokens[1] == 'design' || tokens[1] == 'sds'){
+                    // json.message = result.Object.Description;
+                    json.text = '*'+tokens[0]+' - '+result.Results[0].Name+':* \n_Design_\n>>>'+removeHTML(result.Results[0].c_SystemDesignSuggestions);
 
                 }else if(tokens[1] == 'status' || tokens[1] == 's'){
                     // json.message = result.Object.Description;
