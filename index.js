@@ -95,9 +95,9 @@ app.post('/rallyslash', function(req, res){
                 }else if(tokens[1] == 'status' || tokens[1] == 's'){
                     // json.message = result.Object.Description;
                     json.text = '*'+tokens[0]+' - '+result.Results[0].Name+':*';
-                    var release = result.Results[0].Release?result.Results[0].Release.Name:'Unscheduled';
+                    var release = (typeof result.Results[0].Release != 'undefined' && result.Results[0].Release != null)?result.Results[0].Release.Name:'Unscheduled';
                     json.text += '\n> *Release:* '+release;
-                    var iter = result.Results[0].Iteration?result.Results[0].Iteration.Name:'Unscheduled';
+                    var iter = (typeof result.Results[0].Release != 'undefined' && result.Results[0].Iteration != null)?result.Results[0].Iteration.Name:'Unscheduled';
                     json.text += '\n> *Iteration:* '+iter;
                     json.text += '\n> *Comm Ex Owner:* '+result.Results[0].c_CommExOwner;
                     json.text += '\n> *Status:* '+result.Results[0].c_UserStoryStatus;
