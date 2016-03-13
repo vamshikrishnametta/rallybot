@@ -24,12 +24,12 @@ var restApi = rally({
 
 var removeHTML = function(inText){
   inText = inText.replace('/<div>/g', '\n');
-  inText = inText.replace('/</div>/g', '');
+  inText = inText.replace('/<\/div>/g', '');
   inText = inText.replace('/&nbsp;/g', ' ');
   inText = inText.replace('/<b>/g', '*');
-  inText = inText.replace('/</b>/g', '*');
+  inText = inText.replace('/<\/b>/g', '*');
   inText = inText.replace('/<i>/g', '_');
-  inText = inText.replace('/</i>/g', '_');
+  inText = inText.replace('/<\/i>/g', '_');
   return inText;
 }
 
@@ -54,7 +54,7 @@ app.post('/rallyslash', function(req, res){
             var rallyReqBody = {
                 type: 'hierarchicalrequirement',
                 query: queryUtils.where('FormattedID', '=', tokens[0]),
-                fetch: ['FormattedID', 'Name', 'Description', 'Notes', 'CommExOwner', 'UserStoryStatus', 'CommexITOwner', 'AssignedArchitect', 'DesignState', 'Blocked', 'BlockedReason', 'ScheduleState', 'Itertion', 'Release', 'DeveloperAssigned1' ], //fields to fetch
+                fetch: ['FormattedID', 'Name', 'Description', 'Notes', 'CommExOwner', 'UserStoryStatus', 'CommexITOwner', 'AssignedArchitect', 'DesignState', 'Blocked', 'BlockedReason', 'ScheduleState', 'Itertion', 'Release', 'DeveloperAssigned1', 'SystemDesignSuggestions' ], //fields to fetch
                 limit: Infinity,
                 order: 'Rank',
                 requestOptions: {} //optional additional options to pass through to request
