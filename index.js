@@ -24,14 +24,18 @@ var restApi = rally({
 
 var removeHTML = function(inText){
   var outText = inText;
-  outText = outText.replace(/<div>/g, '\n');
+  outText = outText.replace(/<div\s>/g, '\n');
   outText = outText.replace(/<\/div>/g, '');
   outText = outText.replace(/&nbsp;/g, ' ');
-  outText = outText.replace(/<b>/g, '*');
+  outText = outText.replace(/<b\s>/g, '*');
   outText = outText.replace(/<\/b>/g, '*');
-  outText = outText.replace(/<i>/g, '_');
+  outText = outText.replace(/<i\s>/g, '_');
   outText = outText.replace(/<\/i>/g, '_');
   outText = outText.replace(/<br \/>/g, '\n');
+  outText = outText.replace(/<ol>|<\/ol>/g, '');
+  outText = outText.replace(/<ul>|<\/ul>/g, '');
+  outText = outText.replace(/<li>/g, '\n-');
+  outText = outText.replace(/<font\s>|<\/font>/g, '');
   return outText;
 }
 
