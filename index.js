@@ -23,8 +23,13 @@ var restApi = rally({
    });
 
 var removeHTML = function(inText){
-  inText = inText.replace('<div>', '\n');
-  inText = inText.replace('</div>', '');
+  inText = inText.replace('/<div>/g', '\n');
+  inText = inText.replace('/</div>/g', '');
+  inText = inText.replace('/&nbsp;/g', ' ');
+  inText = inText.replace('/<b>/g', '*');
+  inText = inText.replace('/</b>/g', '*');
+  inText = inText.replace('/<i>/g', '_');
+  inText = inText.replace('/</i>/g', '_');
   return inText;
 }
 
@@ -65,11 +70,11 @@ app.post('/rallyslash', function(req, res){
                 // console.log(result.Results);
                 if(tokens[1] == 'description'){
                     // json.message = result.Object.Description;
-                    json.text = '*'+tokens[0]+' - '+result.Results[0].Name+':* \n>'+removeHTML(result.Results[0].Description);
+                    json.text = '*'+tokens[0]+' - '+result.Results[0].Name+':* \n>>>'+removeHTML(result.Results[0].Description);
 
                 }else if(tokens[1] == 'notes'){
                     // json.message = result.Object.Description;
-                    json.text = '*'+tokens[0]+' - '+result.Results[0].Name+':* \n_Notes_\n>'+removeHTML(result.Results[0].Notes);
+                    json.text = '*'+tokens[0]+' - '+result.Results[0].Name+':* \n_Notes_\n>>>'+removeHTML(result.Results[0].Notes);
 
                 }else if(tokens[1] == 'status'){
                     // json.message = result.Object.Description;
