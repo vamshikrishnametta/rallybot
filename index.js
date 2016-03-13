@@ -68,15 +68,15 @@ app.post('/rallyslash', function(req, res){
             restApi.query(rallyReqBody).then(function(result) {
                 //console.log(result);
                 // console.log(result.Results);
-                if(tokens[1] == 'description'){
+                if(tokens[1] == 'description' || tokens[1] == 'd'){
                     // json.message = result.Object.Description;
                     json.text = '*'+tokens[0]+' - '+result.Results[0].Name+':* \n>>>'+removeHTML(result.Results[0].Description);
 
-                }else if(tokens[1] == 'notes'){
+                }else if(tokens[1] == 'notes' || tokens[1] == 'n'){
                     // json.message = result.Object.Description;
                     json.text = '*'+tokens[0]+' - '+result.Results[0].Name+':* \n_Notes_\n>>>'+removeHTML(result.Results[0].Notes);
 
-                }else if(tokens[1] == 'status'){
+                }else if(tokens[1] == 'status' || tokens[1] == 's'){
                     // json.message = result.Object.Description;
                     json.text = '*'+tokens[0]+' - '+result.Results[0].Name+':*';
                     json.text += '\n Release: '+result.Results[0].Release.Name;
