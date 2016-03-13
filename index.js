@@ -32,7 +32,7 @@ var removeHTML = function(inText){
   outText = outText.replace(/<i>/g, '_');
   outText = outText.replace(/<\/i>/g, '_');
   outText = outText.replace(/<br \/>/g, '\n');
-  return outText+'test';
+  return outText;
 }
 
 
