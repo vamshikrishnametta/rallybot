@@ -34,36 +34,52 @@ app.post('/rallyslash', function(req, res){
         var text = req.body.text;
         console.log(req.body);
         var tokens = text.split(" ");
+        var type = tokens[0].substr(0,2).toUpperCase();
+        var number = tokens[0].substring(2,tokens[0].length);
         if(tokens[0] == 'help'){
             json.message = 'Use format: /rally US123 action\n\n Possible Actions: \n status \n description \n link \n notes';
             res.send(json);
-        }else if((tokens[0].substr(0,2) == 'US' || tokens[0].substr(0,2) == 'DE') && !isNaN(tokens[0].substring(2,tokens[0].length))){
-            // json.message = '<https://rally1.rallydev.com/#/'+process.env.RALLY_WORKSPACE+'/search?keywords='+token[0]+'>';
-            // res.send(json);
-            // json.message = 'US-'+tokens[0].substring(1,tokens[0].lenth - 1);
-            // res.send(json);
+        }else if((type == 'US' || type == 'DE') && !isNaN(number)){
             var rallyReqBody = {
-              
                 type: 'hierarchicalrequirement',
                 query: queryUtils.where('FormattedID', '=', tokens[0]),
-                fetch: ['FormattedID', 'Name', 'Description'], //fields to fetch
+                fetch: ['FormattedID', 'Name', 'Description', 'Notes', 'CommExOwner', 'UserStoryStatus', 'CommexITOwner', 'AssignedArchitect', 'DesignState', 'Blocked', 'BlockedReason', 'ScheduleState', 'Itertion', 'Release', 'DeveloperAssigned1' ], //fields to fetch
                 limit: Infinity,
                 order: 'Rank',
-                // scope: {
-                    // workspace: '/workspace/12345' //optional, only required if reading in non-default workspace
-                // },
                 requestOptions: {} //optional additional options to pass through to request
             };
+
+            if(type == 'DE'){
+              rallyReqBody.type = 'defect';
+            }
+
             // console.log(rallyReqBody);
             restApi.query(rallyReqBody).then(function(result) {
                 //console.log(result);
                 // console.log(result.Results);
                 if(tokens[1] == 'description'){
                     // json.message = result.Object.Description;
-                    json.message = tokens[0]+' - '+result.Results[0].Name+': \n'+result.Results[0].Description;
+                    json.text = '*bold*'+tokens[0]+' - '+result.Results[0].Name+':*bold* \n>'+result.Results[0].Description;
+
+                }else if(tokens[1] == 'notes'){
+                    // json.message = result.Object.Description;
+                    json.text = '*bold*'+tokens[0]+' - '+result.Results[0].Name+':*bold* \n_Notes_\n>'+result.Results[0].Notes;
+
+                }else if(tokens[1] == 'status'){
+                    // json.message = result.Object.Description;
+                    json.text = '*bold*'+tokens[0]+' - '+result.Results[0].Name+':*bold*';
+                    json.text += '\n Release: '+result.Results[0].Release;
+                    json.text += '\n Iteration: '+result.Results[0].Iteration;
+                    json.text += '\n Comm Ex Owner: '+result.Results[0].CommExOwner;
+                    json.text += '\n Status: '+result.Results[0].UserStoryStatus;
+                    json.text += '\n Comm Ex IT Owner: '+result.Results[0].CommexITOwner;
+                    json.text += '\n Architect: '+result.Results[0].AssignedArchitect;
+                    json.text += '\n Design State: '+result.Results[0].DesignState;
+                    json.text += '\n Developer 1: '+result.Results[0].DeveloperAssigned1;
+                    json.text += '\n Development Status: '+result.Results[0].ScheduleState;
 
                 }else{
-                    json.message = '<https://rally1.rallydev.com/#/'+process.env.RALLY_WORKSPACE+'/search?keywords='+tokens[0]+'>';
+                    json.text = 'Here is a link to the story: <https://rally1.rallydev.com/#/'+process.env.RALLY_WORKSPACE+'/search?keywords='+tokens[0]+'>';
                 }
                 res.send(json);
                 // request('http://google.com', function (error, response, json) {
@@ -79,7 +95,7 @@ app.post('/rallyslash', function(req, res){
         }else{
             // console.log(tokens[0].substr(0,2) );
             // console.log('US-'+tokens[0].substring(2,tokens[0].length - 1));
-            json.message = 'Use format: /rally US123 action'
+            json.text = 'Use format: /rally US123 action'
             res.send(json);
         }
 
