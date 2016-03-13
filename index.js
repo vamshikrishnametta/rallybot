@@ -31,7 +31,7 @@ var removeHTML = function(inText){
   outText = outText.replace('/<\/b>/g', '*');
   outText = outText.replace('/<i>/g', '_');
   outText = outText.replace('/<\/i>/g', '_');
-  return outText;
+  return outText+'test';
 }
 
 
