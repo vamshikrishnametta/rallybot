@@ -85,15 +85,15 @@ app.post('/rallyslash', function(req, res){
                 }else if(tokens[1] == 'status' || tokens[1] == 's'){
                     // json.message = result.Object.Description;
                     json.text = '*'+tokens[0]+' - '+result.Results[0].Name+':*';
-                    json.text += '\n Release: '+result.Results[0].Release;
-                    json.text += '\n Iteration: '+result.Results[0].Iteration;
-                    json.text += '\n Comm Ex Owner: '+result.Results[0].c_CommExOwner;
-                    json.text += '\n Status: '+result.Results[0].c_UserStoryStatus;
-                    json.text += '\n Comm Ex IT Owner: '+result.Results[0].c_CommexITOwner;
-                    json.text += '\n Architect: '+result.Results[0].c_AssignedArchitect;
-                    json.text += '\n Design State: '+result.Results[0].c_DesignState;
-                    json.text += '\n Developer 1: '+result.Results[0].c_DeveloperAssigned1;
-                    json.text += '\n Development Status: '+result.Results[0].ScheduleState;
+                    json.text += '\n *Release:* '+result.Results[0].Release.Name;
+                    json.text += '\n *Iteration:* '+result.Results[0].Iteration;
+                    json.text += '\n *Comm Ex Owner:* '+result.Results[0].c_CommExOwner;
+                    json.text += '\n *Status:* '+result.Results[0].c_UserStoryStatus;
+                    json.text += '\n *Comm Ex IT Owner:* '+result.Results[0].c_CommexITOwner;
+                    json.text += '\n *Architect:* '+result.Results[0].c_AssignedArchitect;
+                    json.text += '\n *Design State:* '+result.Results[0].c_DesignState;
+                    json.text += '\n *Developer 1:* '+result.Results[0].c_DeveloperAssigned1;
+                    json.text += '\n *Development Status:* '+result.Results[0].ScheduleState;
 
                 }else{
                     json.text = 'Here is a link to the story: <https://rally1.rallydev.com/#/'+process.env.RALLY_WORKSPACE+'/search?keywords='+tokens[0]+'>';
