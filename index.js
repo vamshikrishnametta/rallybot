@@ -38,7 +38,8 @@ var removeHTML = function(inText){
   outText = outText.replace(/<\/ul>/g, '');
   outText = outText.replace(/<li>/g, '\n-');
   outText = outText.replace(/<\/li>/g, '');
-  outText = outText.replace(/<font\s>|<\/font>/g, '');
+  outText = outText.replace(/<font\s>/g, '');
+  outText = outText.replace(/<\/font>/g, '');
   return outText;
 }
 
