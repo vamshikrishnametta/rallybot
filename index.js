@@ -71,7 +71,7 @@ app.post('/rallyslash', function(req, res){
                 //     console.log('Sent back to Slack'); // Print the google web page.
                 //   }
                 // })
-                res.sendStatus(200);
+                // res.sendStatus(200);
             }).fail(function(errors) {
                 console.log(errors);
             });
