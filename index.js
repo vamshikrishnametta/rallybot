@@ -32,9 +32,12 @@ var removeHTML = function(inText){
   outText = outText.replace(/<i\s>/g, '_');
   outText = outText.replace(/<\/i>/g, '_');
   outText = outText.replace(/<br \/>/g, '\n');
-  outText = outText.replace(/<ol>|<\/ol>/g, '');
-  outText = outText.replace(/<ul>|<\/ul>/g, '');
+  outText = outText.replace(/<ol>/g, '');
+  outText = outText.replace(/<\/ol>/g, '');
+  outText = outText.replace(/<ul>/g, '');
+  outText = outText.replace(/<\/ul>/g, '');
   outText = outText.replace(/<li>/g, '\n-');
+  outText = outText.replace(/<\/li>/g, '');
   outText = outText.replace(/<font\s>|<\/font>/g, '');
   return outText;
 }
