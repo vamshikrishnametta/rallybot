@@ -11,17 +11,17 @@ var app = express();
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 pg.defaults.ssl = true;
-pg.connect(process.env.DATABASE_URL, function(err, client) {
-                  if (err) throw err;
-                  console.log('Connected to postgres! Getting schemas...');
+// pg.connect(process.env.DATABASE_URL, function(err, client) {
+//                   if (err) throw err;
+//                   console.log('Connected to postgres! Getting schemas...');
 
-                  client
-                    .query('CREATE TABLE user ('+
-                           '   username    varchar(255) CONSTRAINT firstkey PRIMARY KEY,'+
-                           '   apiKey      varchar(64) NOT NULL'+
-                          ');')
-                    .on('end', function() { client.end(); })
-                });
+//                   client
+//                     .query('CREATE TABLE user ('+
+//                            '   username    varchar(255) CONSTRAINT firstkey PRIMARY KEY,'+
+//                            '   apiKey      varchar(64) NOT NULL'+
+//                           ');')
+//                     .on('end', function() { client.end(); })
+//                 });
 
 
 bluebird.promisifyAll(redis.RedisClient.prototype);
