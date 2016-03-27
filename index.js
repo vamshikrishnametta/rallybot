@@ -105,7 +105,7 @@ app.post('/rallyslash', function(req, res){
           var number = tokens[0].substring(2,tokens[0].length);
         }
         if(tokens.length >= 1 && tokens[0] == 'help'){
-            json.text = 'Use format: /rally US123 action\n\n Possible Actions: \n status \n description \n link \n notes \n design \n\nRegister your API Key to perform updates by using /rally register';
+            json.text = 'Use format: /rally US123 action\n\n Possible Actions: \n status \n description \n link \n notes \n design\n\n Add *_\'p\'_* to the end to post to the channel for others \n\nRegister your API Key to perform updates by using /rally register';
             res.send(json);
         }else if(tokens.length >= 1 && tokens[0] == 'register'){
             if(tokens.length == 2){
