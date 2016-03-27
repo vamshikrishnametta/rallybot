@@ -108,6 +108,9 @@ app.post('/rallyslash', function(req, res){
         }
         if(tokens.length >= 1 && tokens[0] == 'help'){
             json.text = 'Use format: /rally US123 action\n\n Possible Actions: \n status \n description \n link \n notes \n design\n\n Add *_\'p\'_* to the end to post to the channel for others \n\nRegister your API Key to perform updates by using /rally register';
+            if(tokens.length >= 2 && (tokens[tokens.length - 1] == 'public' || tokens[tokens.length - 1] == 'p')){
+                  json.response_type = 'in_channel';
+              }
             res.send(json);
         }else if(tokens.length >= 1 && tokens[0] == 'register'){
             if(tokens.length == 2){
@@ -145,11 +148,14 @@ app.post('/rallyslash', function(req, res){
                 });
               }).fail(function(errors) {
                 console.log('Invalid API Key');
-                json.message = 'Invalid API Key';
+                json.text = 'Invalid API Key';
                 res.send(json);
               });
             }else{
               json.text = '*Please Register Your Rally Account*\n1. Login to your <https://rally1.rallydev.com/#/'+process.env.RALLY_WORKSPACE+'/dashboard|Rally Workspace>\n2. Click the follwing link to <https://rally1.rallydev.com/login/accounts/index.html#/keys|Register an API Key>\n3. Copy the newly created API Key\n4. Use the following command in Slack: /rally register [API_KEY]';
+              if(tokens.length >= 2 && (tokens[tokens.length - 1] == 'public' || tokens[tokens.length - 1] == 'p')){
+                  json.response_type = 'in_channel';
+              }
               res.send(json);
             }
         }else if(tokens.length >= 2 && (type == 'US' || type == 'DE') && !isNaN(number)){
@@ -312,6 +318,7 @@ app.post('/rallyslash', function(req, res){
             // console.log(tokens[0].substr(0,2) );
             // console.log('US-'+tokens[0].substring(2,tokens[0].length - 1));
             json.text = 'Use format: /rally US123 action'
+            
             res.send(json);
         }
 
