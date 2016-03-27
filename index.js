@@ -83,7 +83,7 @@ app.post('/rallyslash', function(req, res){
 
     if(req.body.token == process.env.BOT_TOKEN){
         var message = ' ';
-        var json = json = {text: message, username: 'rallybot', icon_emoji: ':nerd:', response_type: 'ephemeral'};
+        var json = json = {text: message, username: 'rallybot', response_type: 'ephemeral'};
         var text = req.body.text;
         var username = req.body.user_name;
         console.log(req.body);
@@ -97,10 +97,12 @@ app.post('/rallyslash', function(req, res){
           var number = tokens[0].substring(2,tokens[0].length);
         }
         if(tokens.length >= 1 && tokens[0] == 'help'){
+            console.log('Help response');
             json.message = 'Use format: /rally US123 action\n\n Possible Actions: \n status \n description \n link \n notes \n design';
             res.send(json);
         }else if(tokens.length >= 1 && tokens[0] == 'register'){
             if(tokens.length == 2){
+              console.log('Found 2 tokens');
               rallyConnectionInfo.apiKey = tokens[1];
               var restApi = rally(rallyConnectionInfo);
               var rallyReqBody = {
@@ -114,22 +116,25 @@ app.post('/rallyslash', function(req, res){
               restApi.query(rallyReqBody).then(function(result) {
                 pg.connect(process.env.DATABASE_URL, function(err, client) {
                   if (err) throw err;
-                  console.log('Connected to postgres! Getting schemas...');
+                  console.log('Connected to postgres! Creating user');
 
                   client
                     .query('INSERT INTO integration_user (username, apiKey) VALUES (\''+username+'\',\''+tokens[1]+'\') ON CONFLICT (username) DO UPDATE integration_user SET apiKey = '+tokens[1]+' WHERE username = '+username+';')
                     .on('end', function() { 
                       redisClient.set("username", tokens[1]);
                       client.end(); 
+                      console.log('Successfully registered '+username+' with API Key: '+tokens[1]+' ');
                       json.message = 'Successfully registered '+username+' with API Key: '+tokens[1]+' ';
                       res.send(json);
                     })
                 });
               }).fail(function(errors) {
+                console.log('Invalid API Key');
                 json.message = 'Invalid API Key';
                 res.send(json);
               });
             }else{
+              console.log('Use format: /rally register [API_KEY]');
               json.message = 'Use format: /rally register [API_KEY]';
               res.send(json);
             }
@@ -224,6 +229,7 @@ app.post('/rallyslash', function(req, res){
         }else{
             // console.log(tokens[0].substr(0,2) );
             // console.log('US-'+tokens[0].substring(2,tokens[0].length - 1));
+            console.log('Bad format');
             json.text = 'Use format: /rally US123 action'
             res.send(json);
         }
