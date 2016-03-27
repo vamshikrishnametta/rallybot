@@ -24,7 +24,13 @@ pg.connect(process.env.DATABASE_URL, function(err, client) {
                       if(err) {
                         return console.error('error running query', err);
                       }
-                      client.end();
+                      client.query('CREATE FUNCTION merge_db(key INT, data TEXT) RETURNS VOID AS $$ BEGIN LOOP UPDATE db SET b = data WHERE a = key; IF found THEN RETURN; END IF; BEGIN INSERT INTO db(a,b) VALUES (key, data); RETURN; EXCEPTION WHEN unique_violation THEN END; END LOOP; END; $$ LANGUAGE plpgsql;', 
+                        function(err, result) {
+                          if(err) {
+                            return console.error('error running query', err);
+                          }
+                          client.end();
+                        });
                     });
                 });
 
