@@ -24,7 +24,7 @@ pg.connect(process.env.DATABASE_URL, function(err, client) {
                       if(err) {
                         return console.error('error running query', err);
                       }
-                      client.query('CREATE FUNCTION merge_db(key INT, data TEXT) RETURNS VOID AS $$ BEGIN LOOP UPDATE db SET b = data WHERE a = key; IF found THEN RETURN; END IF; BEGIN INSERT INTO db(a,b) VALUES (key, data); RETURN; EXCEPTION WHEN unique_violation THEN END; END LOOP; END; $$ LANGUAGE plpgsql;', 
+                      client.query('CREATE FUNCTION merge_db(username varchar(255), apiKey varchar(64)) RETURNS VOID AS $$ BEGIN LOOP UPDATE integration_user SET apiKey = '+tokens[1]+' WHERE username = '+username+'; IF found THEN RETURN; END IF; BEGIN INSERT INTO integration_user (username, apiKey) VALUES (\''+username+'\',\''+tokens[1]+'\'); RETURN; EXCEPTION WHEN unique_violation THEN END; END LOOP; END; $$ LANGUAGE plpgsql;', 
                         function(err, result) {
                           if(err) {
                             return console.error('error running query', err);
@@ -126,7 +126,7 @@ app.post('/rallyslash', function(req, res){
                   //   .on('end', function() { 
                       
                   //   })
-                  client.query('INSERT INTO integration_user (username, apiKey) VALUES (\''+username+'\',\''+tokens[1]+'\') ON CONFLICT (username) DO UPDATE integration_user SET apiKey = '+tokens[1]+' WHERE username = '+username+';', 
+                  client.query('SELECT merge_db(\''+username+'\',\''+tokens[1]+'\');', 
                     function(err, result) {
                       if(err) {
                         json.text = 'Unable to save API Key';
