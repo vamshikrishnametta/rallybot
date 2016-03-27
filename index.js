@@ -210,9 +210,9 @@ app.post('/rallyslash', function(req, res){
 
                         console.log('Trying to Update');
                         var rallyUpdateBody = {
-                          ref: result.Results[0].Object,
+                          ref: result.Results[0],
                           data: {
-                              c_DesignState: '5. Design Complete'
+                              DesignState: '5. Design Complete'
                           },
                           fetch: ['Name']
                         };
