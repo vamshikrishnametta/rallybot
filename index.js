@@ -208,11 +208,11 @@ app.post('/rallyslash', function(req, res){
                         tokens.shift();
                         tokens.shift();
                         var d = new Date();
-                        var notes = '<br /><br />'+d.getFullYear()+'-'+d.getMonth()+'-'+d.getDate()+' - '+username+': '+tokens.join(' ');
+                        var notes = d.getFullYear()+'-'+d.getMonth()+'-'+d.getDate()+' - '+username+' [via Slack]: '+tokens.join(' ');
                         var rallyUpdateBody = {
                           ref: result.Results[0],
                           data: {
-                              Notes: result.Results[0].Notes + notes
+                              Notes: result.Results[0].Notes + '<br /><br />' + notes
                           },
                           fetch: ['Name']
                         };
@@ -220,7 +220,7 @@ app.post('/rallyslash', function(req, res){
                         restApi.update(rallyUpdateBody).then(function(result) {
                           console.log('Update Success');
                           console.log(result);
-                          json.text = '*'+tokens[0]+' - '+result.Object.Name+':* Sucecssfully added notes:\n'+notes;
+                          json.text = '*'+tokens[0]+' - '+result.Object.Name+':* Successfully added notes:\n'+notes;
                           res.send(json);
                         }).fail(function(errors) {
                           console.log('Update Error');
