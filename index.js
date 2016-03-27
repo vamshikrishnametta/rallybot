@@ -40,6 +40,8 @@ var removeHTML = function(inText){
   outText = outText.replace(/<\/li>/g, '');
   outText = outText.replace(/<font\s*.*?>/g, '');
   outText = outText.replace(/<\/font>/g, '');
+  outText = outText.replace(/<p\s*.*?>/g, '');
+  outText = outText.replace(/<\/p>/g, '');
   outText = outText.replace(/<span\s*.*?>/g, '');
   outText = outText.replace(/<\/span>/g, '');
   return outText;
