@@ -193,8 +193,8 @@ app.post('/rallyslash', function(req, res){
 
               // console.log(rallyReqBody);
               restApi.query(rallyReqBody).then(function(result) {
-                  //console.log(result);
-                  // console.log(result.Results);
+                  console.log(result);
+                  console.log(result.Results);
                   if(tokens[1] == 'description' || tokens[1] == 'd'){
                       // json.message = result.Object.Description;
                       json.text = '*'+tokens[0]+' - '+result.Results[0].Name+':* \n>>>'+removeHTML(result.Results[0].Description);
@@ -208,7 +208,7 @@ app.post('/rallyslash', function(req, res){
                       
 
                       if(tokens.length >= 3 && (tokens[2] == 'complete' || tokens[2] == 'c')){
-
+                        console.log('Trying to Update');
                         restApi.update({
                           ref: result.Results[0].Object,
                           data: {
@@ -216,9 +216,11 @@ app.post('/rallyslash', function(req, res){
                           },
                           fetch: ['Name']
                         }).then(function(result) {
+                          console.log('Update Success');
                           json.text = '*'+tokens[0]+' - '+result.Results[0].Name+':* Design State is now _5. Design Complete_';
                           res.send(json);
                         }).fail(function(errors) {
+                          console.log('Update Error');
                             console.log(errors);
                         });
 
