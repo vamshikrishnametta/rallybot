@@ -88,6 +88,8 @@ app.post('/rallyslash', function(req, res){
         var username = req.body.user_name;
         console.log(req.body);
         var tokens = text.split(" ");
+        console.log('Tokens: '+tokens.length);
+        console.log(tokens);
         var type = '';
         var number = 0;
         if(tokens.length >= 1){
@@ -219,7 +221,6 @@ app.post('/rallyslash', function(req, res){
             }).fail(function(errors) {
                 console.log(errors);
             });
-
         }else{
             // console.log(tokens[0].substr(0,2) );
             // console.log('US-'+tokens[0].substring(2,tokens[0].length - 1));
