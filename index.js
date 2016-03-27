@@ -103,7 +103,7 @@ app.post('/rallyslash', function(req, res){
                   order: 'Rank',
                   requestOptions: {} //optional additional options to pass through to request
               };
-              restApi.query(rallyReqBody).then(function(result) {
+              var restApi.query(rallyReqBody).then(function(result) {
                 pg.connect(process.env.DATABASE_URL, function(err, client) {
                   if (err) throw err;
                   console.log('Connected to postgres! Getting schemas...');
@@ -145,7 +145,7 @@ app.post('/rallyslash', function(req, res){
               }else{
                 rallyConnectionInfo.apiKey = res;
               }
-            }
+            });
 
             var restApi = rally(rallyConnectionInfo);
 
