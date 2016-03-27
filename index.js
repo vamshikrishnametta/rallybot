@@ -214,13 +214,13 @@ app.post('/rallyslash', function(req, res){
                           data: {
                               Notes: result.Results[0].Notes + '<br /><br />' + notes
                           },
-                          fetch: ['Name']
+                          fetch: ['FormattedID','Name']
                         };
                         //console.log(rallyUpdateBody);
                         restApi.update(rallyUpdateBody).then(function(result) {
                           console.log('Update Success');
                           console.log(result);
-                          json.text = '*'+tokens[0]+' - '+result.Object.Name+':* Successfully added notes:\n'+notes;
+                          json.text = '*'+result.Object.FormattedID+' - '+result.Object.Name+':* Successfully added notes:\n'+notes;
                           res.send(json);
                         }).fail(function(errors) {
                           console.log('Update Error');
