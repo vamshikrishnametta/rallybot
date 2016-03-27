@@ -27,12 +27,14 @@ var removeHTML = function(inText){
   outText = outText.replace(/<div\s*.*?>/g, '\n');
   outText = outText.replace(/<\/div>/g, '');
   outText = outText.replace(/&nbsp;/g, ' ');
+  outText = outText.replace(/&lt;/g, '<');
+  outText = outText.replace(/&gt;/g, '>');
   outText = outText.replace(/<b\s*.*?>/g, '*');
   outText = outText.replace(/<\/b>/g, '*');
   outText = outText.replace(/<i\s*.*?>/g, '_');
   outText = outText.replace(/<\/i>/g, '_');
   outText = outText.replace(/<br \/>/g, '\n');
-  outText = outText.replace(/<ol>/g, '');
+  outText = outText.replace(/<ol\s*.*?>/g, '');
   outText = outText.replace(/<\/ol>/g, '');
   outText = outText.replace(/<ul\s*.*?>/g, '');
   outText = outText.replace(/<\/ul>/g, '');
@@ -55,16 +57,20 @@ app.post('/rallyslash', function(req, res){
 
     if(req.body.token == process.env.BOT_TOKEN){
         var message = ' ';
-        var json = json = {text: message, username: 'rallybot', icon_emoji: ':nerd:'};
+        var json = json = {text: message, username: 'rallybot', icon_emoji: ':nerd:', response_type: 'ephemeral'};
         var text = req.body.text;
         console.log(req.body);
         var tokens = text.split(" ");
-        var type = tokens[0].substr(0,2).toUpperCase();
-        var number = tokens[0].substring(2,tokens[0].length);
-        if(tokens[0] == 'help'){
+        var type = '';
+        var number = 0;
+        if(tokens.length >= 1){
+          var type = tokens[0].substr(0,2).toUpperCase();
+          var number = tokens[0].substring(2,tokens[0].length);
+        }
+        if(tokens.length >= 1 && tokens[0] == 'help'){
             json.message = 'Use format: /rally US123 action\n\n Possible Actions: \n status \n description \n link \n notes';
             res.send(json);
-        }else if((type == 'US' || type == 'DE') && !isNaN(number)){
+        }else if(tokens.length >= 2 && (type == 'US' || type == 'DE') && !isNaN(number)){
             var rallyReqBody = {
                 type: 'hierarchicalrequirement',
                 query: queryUtils.where('FormattedID', '=', tokens[0]),
@@ -110,8 +116,13 @@ app.post('/rallyslash', function(req, res){
                     json.text += '\n> *Development Status:* '+result.Results[0].ScheduleState;
 
                 }else{
-                    json.text = 'Here is a link to the story: <https://rally1.rallydev.com/#/'+process.env.RALLY_WORKSPACE+'/search?keywords='+tokens[0]+'>';
+                    json.text = 'Here is a link to the story: <https://rally1.rallydev.com/#/'+process.env.RALLY_WORKSPACE+'/search?keywords='+tokens[0]+'|'+tokens[0]+'>';
                 }
+
+                if(tokens.length >= 3 && (tokens[1] == 'public' || tokens[1] == 'p')){
+                    json.response_type = 'in_channel';
+                }
+
                 res.send(json);
                 // request('http://google.com', function (error, response, json) {
                 //   if (!error && response.statusCode == 200) {
