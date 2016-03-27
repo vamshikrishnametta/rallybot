@@ -121,11 +121,6 @@ app.post('/rallyslash', function(req, res){
                   if (err) throw err;
                   console.log('Connected to postgres! Creating user');
 
-                  // client
-                  //   .query('INSERT INTO integration_user (username, apiKey) VALUES (\''+username+'\',\''+tokens[1]+'\') ON CONFLICT (username) DO UPDATE integration_user SET apiKey = '+tokens[1]+' WHERE username = '+username+';')
-                  //   .on('end', function() { 
-                      
-                  //   })
                   client.query('SELECT merge_db(\''+username+'\',\''+tokens[1]+'\');', 
                     function(err, result) {
                       if(err) {
@@ -153,27 +148,27 @@ app.post('/rallyslash', function(req, res){
             }
         }else if(tokens.length >= 2 && (type == 'US' || type == 'DE') && !isNaN(number)){
 
-            //Get Connection API
+            Get Connection API
 
-            // redisClient.getAsync('username').then(function(res) {
-            //   if(res == null){
-            //     pg.connect(process.env.DATABASE_URL, function(err, client) {
-            //       if (err) throw err;
-            //       console.log('Connected to postgres! Getting schemas...');
+            redisClient.getAsync('username').then(function(res) {
+              if(res == null){
+                pg.connect(process.env.DATABASE_URL, function(err, client) {
+                  if (err) throw err;
+                  console.log('Connected to postgres! Getting schemas...');
 
-            //       client
-            //         .query('SELECT apiKey FROM integration_user WHERE username = '+username+';')
-            //         .on('row', function(row) {
-            //           if(row.apiKey && row.apiKey != null){
-            //             redisClient.set("username", row.apiKey);
-            //             rallyConnectionInfo.apiKey = row.apiKey;
-            //           }
-            //         });
-            //     });
-            //   }else{
-            //     rallyConnectionInfo.apiKey = res;
-            //   }
-            // });
+                  client
+                    .query('SELECT apiKey FROM integration_user WHERE username = '+username+';')
+                    .on('row', function(row) {
+                      if(row.apiKey && row.apiKey != null){
+                        redisClient.set("username", row.apiKey);
+                        rallyConnectionInfo.apiKey = row.apiKey;
+                      }
+                    });
+                });
+              }else{
+                rallyConnectionInfo.apiKey = res;
+              }
+            });
 
             var restApi = rally(rallyConnectionInfo);
 
@@ -190,55 +185,78 @@ app.post('/rallyslash', function(req, res){
               rallyReqBody.type = 'defect';
             }
 
-            // console.log(rallyReqBody);
-            restApi.query(rallyReqBody).then(function(result) {
-                //console.log(result);
-                // console.log(result.Results);
-                if(tokens[1] == 'description' || tokens[1] == 'd'){
-                    // json.message = result.Object.Description;
-                    json.text = '*'+tokens[0]+' - '+result.Results[0].Name+':* \n>>>'+removeHTML(result.Results[0].Description);
 
-                }else if(tokens[1] == 'notes' || tokens[1] == 'n'){
-                    // json.message = result.Object.Description;
-                    json.text = '*'+tokens[0]+' - '+result.Results[0].Name+':* \n_Notes_\n>>>'+removeHTML(result.Results[0].Notes);
 
-                }else if(tokens[1] == 'design' || tokens[1] == 'sds'){
-                    // json.message = result.Object.Description;
-                    json.text = '*'+tokens[0]+' - '+result.Results[0].Name+':* \n_Design_\n>>>'+removeHTML(result.Results[0].c_SystemDesignSuggestions);
+              // console.log(rallyReqBody);
+              restApi.query(rallyReqBody).then(function(result) {
+                  //console.log(result);
+                  // console.log(result.Results);
+                  if(tokens[1] == 'description' || tokens[1] == 'd'){
+                      // json.message = result.Object.Description;
+                      json.text = '*'+tokens[0]+' - '+result.Results[0].Name+':* \n>>>'+removeHTML(result.Results[0].Description);
 
-                }else if(tokens[1] == 'status' || tokens[1] == 's'){
-                    // json.message = result.Object.Description;
-                    json.text = '*'+tokens[0]+' - '+result.Results[0].Name+':*';
-                    var release = (typeof result.Results[0].Release != 'undefined' && result.Results[0].Release != null)?result.Results[0].Release.Name:'Unscheduled';
-                    json.text += '\n> *Release:* '+release;
-                    var iter = (typeof result.Results[0].Release != 'undefined' && result.Results[0].Iteration != null)?result.Results[0].Iteration.Name:'Unscheduled';
-                    json.text += '\n> *Iteration:* '+iter;
-                    json.text += '\n> *Comm Ex Owner:* '+result.Results[0].c_CommExOwner;
-                    json.text += '\n> *Status:* '+result.Results[0].c_UserStoryStatus;
-                    json.text += '\n> *Comm Ex IT Owner:* '+result.Results[0].c_CommexITOwner;
-                    json.text += '\n> *Architect:* '+result.Results[0].c_AssignedArchitect;
-                    json.text += '\n> *Design State:* '+result.Results[0].c_DesignState;
-                    json.text += '\n> *Developer 1:* '+result.Results[0].c_DeveloperAssigned1;
-                    json.text += '\n> *Development Status:* '+result.Results[0].ScheduleState;
+                  }else if(tokens[1] == 'notes' || tokens[1] == 'n'){
+                      // json.message = result.Object.Description;
+                      json.text = '*'+tokens[0]+' - '+result.Results[0].Name+':* \n_Notes_\n>>>'+removeHTML(result.Results[0].Notes);
 
-                }else{
-                    json.text = 'Here is a link to the story: <https://rally1.rallydev.com/#/'+process.env.RALLY_WORKSPACE+'/search?keywords='+tokens[0]+'|'+tokens[0]+'>';
-                }
+                  }else if(tokens[1] == 'design' || tokens[1] == 'sds'){
+                      // json.message = result.Object.Description;
+                      
 
-                if(tokens.length >= 3 && (tokens[1] == 'public' || tokens[1] == 'p')){
-                    json.response_type = 'in_channel';
-                }
+                      if(tokens.length >= 3 && (tokens[1] == 'design' || tokens[1] == 'sds') && (tokens[2] == 'complete' || tokens[2] == 'c')){
 
-                res.send(json);
-                // request('http://google.com', function (error, response, json) {
-                //   if (!error && response.statusCode == 200) {
-                //     console.log('Sent back to Slack'); // Print the google web page.
-                //   }
-                // })
-                // res.sendStatus(200);
-            }).fail(function(errors) {
-                console.log(errors);
-            });
+                        restApi.update({
+                          ref: result.Results[0].Object,
+                          data: {
+                              DesignState: '5. Design Complete'
+                          },
+                          fetch: ['Name']
+                        }).then(function(result) {
+                          json.text = '*'+tokens[0]+' - '+result.Results[0].Name+':* Design State is now _5. Design Complete_';
+                          res.send(json);
+                        }).fail(function(errors) {
+                            console.log(errors);
+                        });
+
+                      }else{
+                        json.text = '*'+tokens[0]+' - '+result.Results[0].Name+':* \n_Design_\n>>>'+removeHTML(result.Results[0].c_SystemDesignSuggestions);
+                        res.send(json);
+                      }
+
+                  }else if(tokens[1] == 'status' || tokens[1] == 's'){
+                      // json.message = result.Object.Description;
+                      json.text = '*'+tokens[0]+' - '+result.Results[0].Name+':*';
+                      var release = (typeof result.Results[0].Release != 'undefined' && result.Results[0].Release != null)?result.Results[0].Release.Name:'Unscheduled';
+                      json.text += '\n> *Release:* '+release;
+                      var iter = (typeof result.Results[0].Release != 'undefined' && result.Results[0].Iteration != null)?result.Results[0].Iteration.Name:'Unscheduled';
+                      json.text += '\n> *Iteration:* '+iter;
+                      json.text += '\n> *Comm Ex Owner:* '+result.Results[0].c_CommExOwner;
+                      json.text += '\n> *Status:* '+result.Results[0].c_UserStoryStatus;
+                      json.text += '\n> *Comm Ex IT Owner:* '+result.Results[0].c_CommexITOwner;
+                      json.text += '\n> *Architect:* '+result.Results[0].c_AssignedArchitect;
+                      json.text += '\n> *Design State:* '+result.Results[0].c_DesignState;
+                      json.text += '\n> *Developer 1:* '+result.Results[0].c_DeveloperAssigned1;
+                      json.text += '\n> *Development Status:* '+result.Results[0].ScheduleState;
+
+                  }else{
+                      json.text = 'Here is a link to the story: <https://rally1.rallydev.com/#/'+process.env.RALLY_WORKSPACE+'/search?keywords='+tokens[0]+'|'+tokens[0]+'>';
+                  }
+
+                  if(tokens.length >= 2 && (tokens[tokens.length - 1] == 'public' || tokens[tokens.length - 1] == 'p')){
+                      json.response_type = 'in_channel';
+                  }
+
+                  res.send(json);
+                  // request('http://google.com', function (error, response, json) {
+                  //   if (!error && response.statusCode == 200) {
+                  //     console.log('Sent back to Slack'); // Print the google web page.
+                  //   }
+                  // })
+                  // res.sendStatus(200);
+              }).fail(function(errors) {
+                  console.log(errors);
+              });
+            
         }else{
             // console.log(tokens[0].substr(0,2) );
             // console.log('US-'+tokens[0].substring(2,tokens[0].length - 1));
