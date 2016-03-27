@@ -24,7 +24,7 @@ pg.connect(process.env.DATABASE_URL, function(err, client) {
                       if(err) {
                         return console.error('error running query', err);
                       }
-                      client.query('CREATE FUNCTION merge_db(username varchar(255), apiKey varchar(64)) RETURNS VOID AS $$ BEGIN LOOP UPDATE integration_user SET apiKey = '+tokens[1]+' WHERE username = '+username+'; IF found THEN RETURN; END IF; BEGIN INSERT INTO integration_user (username, apiKey) VALUES (\''+username+'\',\''+tokens[1]+'\'); RETURN; EXCEPTION WHEN unique_violation THEN END; END LOOP; END; $$ LANGUAGE plpgsql;', 
+                      client.query('CREATE FUNCTION merge_db(user_name varchar(255), key varchar(64)) RETURNS VOID AS $$ BEGIN LOOP UPDATE integration_user SET apiKey = key WHERE username = user_name; IF found THEN RETURN; END IF; BEGIN INSERT INTO integration_user (username, apiKey) VALUES (user_name,key); RETURN; EXCEPTION WHEN unique_violation THEN END; END LOOP; END; $$ LANGUAGE plpgsql;', 
                         function(err, result) {
                           if(err) {
                             return console.error('error running query', err);
