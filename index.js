@@ -149,7 +149,7 @@ app.post('/rallyslash', function(req, res){
                 res.send(json);
               });
             }else{
-              json.text = '1. Login to your <https://rally1.rallydev.com/#/'+process.env.RALLY_WORKSPACE+'/|Rally Workspace>\n2. Click the follwing link to <https://rally1.rallydev.com/login/accounts/index.html#/keys|Register an API Key>\n3. Copy the newly created API Key\n4. Use the following command in Slack: /rally register [API_KEY]';
+              json.text = '*Please Register Your Rally Account*\n1. Login to your <https://rally1.rallydev.com/#/'+process.env.RALLY_WORKSPACE+'/|Rally Workspace>\n2. Click the follwing link to <https://rally1.rallydev.com/login/accounts/index.html#/keys|Register an API Key>\n3. Copy the newly created API Key\n4. Use the following command in Slack: /rally register [API_KEY]';
               res.send(json);
             }
         }else if(tokens.length >= 2 && (type == 'US' || type == 'DE') && !isNaN(number)){
