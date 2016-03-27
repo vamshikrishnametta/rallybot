@@ -95,6 +95,7 @@ app.post('/rallyslash', function(req, res){
         }else if(tokens.length >= 1 && tokens[0] == 'register'){
             if(tokens.length == 2){
               rallyConnectionInfo.apiKey = tokens[1];
+              var restApi = rally(rallyConnectionInfo);
               var rallyReqBody = {
                   type: 'hierarchicalrequirement',
                   query: queryUtils.where('FormattedID', '=', 'US1'),
@@ -103,7 +104,7 @@ app.post('/rallyslash', function(req, res){
                   order: 'Rank',
                   requestOptions: {} //optional additional options to pass through to request
               };
-              var restApi.query(rallyReqBody).then(function(result) {
+              restApi.query(rallyReqBody).then(function(result) {
                 pg.connect(process.env.DATABASE_URL, function(err, client) {
                   if (err) throw err;
                   console.log('Connected to postgres! Getting schemas...');
