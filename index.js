@@ -15,9 +15,17 @@ pg.connect(process.env.DATABASE_URL, function(err, client) {
                   if (err) throw err;
                   console.log('Connected to postgres! Getting schemas...');
 
-                  client
-                    .query('CREATE TABLE user ( username varchar(255) PRIMARY KEY, apiKey varchar(64) NOT NULL );')
-                    .on('end', function() { client.end(); })
+                  // client
+                  //   .query('CREATE TABLE user ( username varchar(255) PRIMARY KEY, apiKey varchar(64) NOT NULL );')
+                  //   .on('end', function() { client.end(); })
+
+                  client.query('CREATE TABLE user ( username varchar(255) PRIMARY KEY, apiKey varchar(64) NOT NULL );', 
+                    function(err, result) {
+                      if(err) {
+                        return console.error('error running query', err);
+                      }
+                      client.end();
+                    });
                 });
 
 
