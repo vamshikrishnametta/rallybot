@@ -26,7 +26,7 @@ pg.connect(process.env.DATABASE_URL, function(err, client) {
 
 bluebird.promisifyAll(redis.RedisClient.prototype);
 bluebird.promisifyAll(redis.Multi.prototype);
-var redisClient = require('redis').createClient(process.env.REDIS_URL);
+// var redisClient = require('redis').createClient(process.env.REDIS_URL);
 
 var rallyConnectionInfo = {
        // apiKey: process.env.RALLY_API_KEY, //preferred, required if no user/pass, defaults to process.env.RALLY_API_KEY
