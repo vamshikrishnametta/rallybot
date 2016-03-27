@@ -54,31 +54,35 @@ var rallyConnectionInfo = {
    };
 
 var removeHTML = function(inText){
-  var outText = inText;
-  outText = outText.replace(/<div\s*.*?>/g, '\n');
-  outText = outText.replace(/<\/div>/g, '');
-  outText = outText.replace(/&nbsp;/g, ' ');
-  outText = outText.replace(/&lt;/g, '<');
-  outText = outText.replace(/&gt;/g, '>');
-  outText = outText.replace(/<b\s*.*?>/g, '*');
-  outText = outText.replace(/<\/b>/g, '*');
-  outText = outText.replace(/<\/blockquote>/g, '*');
-  outText = outText.replace(/<i\s*.*?>/g, '_');
-  outText = outText.replace(/<\/i>/g, '_');
-  outText = outText.replace(/<br \/>/g, '\n');
-  outText = outText.replace(/<ol\s*.*?>/g, '');
-  outText = outText.replace(/<\/ol>/g, '');
-  outText = outText.replace(/<ul\s*.*?>/g, '');
-  outText = outText.replace(/<\/ul>/g, '');
-  outText = outText.replace(/<li\s*.*?>/g, '\n-');
-  outText = outText.replace(/<\/li>/g, '');
-  outText = outText.replace(/<font\s*.*?>/g, '');
-  outText = outText.replace(/<\/font>/g, '');
-  outText = outText.replace(/<p\s*.*?>/g, '');
-  outText = outText.replace(/<\/p>/g, '');
-  outText = outText.replace(/<span\s*.*?>/g, '');
-  outText = outText.replace(/<\/span>/g, '');
-  return outText;
+  if(inText == null){
+    return '';
+  }else{
+    var outText = inText;
+    outText = outText.replace(/<div\s*.*?>/g, '\n');
+    outText = outText.replace(/<\/div>/g, '');
+    outText = outText.replace(/&nbsp;/g, ' ');
+    outText = outText.replace(/&lt;/g, '<');
+    outText = outText.replace(/&gt;/g, '>');
+    outText = outText.replace(/<b\s*.*?>/g, '*');
+    outText = outText.replace(/<\/b>/g, '*');
+    outText = outText.replace(/<\/blockquote>/g, '*');
+    outText = outText.replace(/<i\s*.*?>/g, '_');
+    outText = outText.replace(/<\/i>/g, '_');
+    outText = outText.replace(/<br \/>/g, '\n');
+    outText = outText.replace(/<ol\s*.*?>/g, '');
+    outText = outText.replace(/<\/ol>/g, '');
+    outText = outText.replace(/<ul\s*.*?>/g, '');
+    outText = outText.replace(/<\/ul>/g, '');
+    outText = outText.replace(/<li\s*.*?>/g, '\n-');
+    outText = outText.replace(/<\/li>/g, '');
+    outText = outText.replace(/<font\s*.*?>/g, '');
+    outText = outText.replace(/<\/font>/g, '');
+    outText = outText.replace(/<p\s*.*?>/g, '');
+    outText = outText.replace(/<\/p>/g, '');
+    outText = outText.replace(/<span\s*.*?>/g, '');
+    outText = outText.replace(/<\/span>/g, '');
+    return outText;
+  }
 }
 
 app.post('/rallyslash', function(req, res){
