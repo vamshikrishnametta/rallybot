@@ -92,60 +92,60 @@ app.post('/rallyslash', function(req, res){
             json.message = 'Use format: /rally US123 action\n\n Possible Actions: \n status \n description \n link \n notes \n design';
             res.send(json);
         }else if(tokens.length >= 1 && tokens[0] == 'register'){
-            if(tokens.length == 2){
-              rallyConnectionInfo.apiKey = tokens[1];
-              var restApi = rally(rallyConnectionInfo);
-              var rallyReqBody = {
-                  type: 'hierarchicalrequirement',
-                  query: queryUtils.where('FormattedID', '=', 'US1'),
-                  fetch: ['FormattedID', 'Name', 'Description', 'Notes', 'CommExOwner', 'UserStoryStatus', 'CommexITOwner', 'AssignedArchitect', 'DesignState', 'Blocked', 'BlockedReason', 'ScheduleState', 'Iteration', 'Release', 'DeveloperAssigned1', 'SystemDesignSuggestions' ], //fields to fetch
-                  limit: Infinity,
-                  order: 'Rank',
-                  requestOptions: {} //optional additional options to pass through to request
-              };
-              restApi.query(rallyReqBody).then(function(result) {
-                pg.connect(process.env.DATABASE_URL, function(err, client) {
-                  if (err) throw err;
-                  console.log('Connected to postgres! Getting schemas...');
+            // if(tokens.length == 2){
+            //   rallyConnectionInfo.apiKey = tokens[1];
+            //   var restApi = rally(rallyConnectionInfo);
+            //   var rallyReqBody = {
+            //       type: 'hierarchicalrequirement',
+            //       query: queryUtils.where('FormattedID', '=', 'US1'),
+            //       fetch: ['FormattedID', 'Name', 'Description', 'Notes', 'CommExOwner', 'UserStoryStatus', 'CommexITOwner', 'AssignedArchitect', 'DesignState', 'Blocked', 'BlockedReason', 'ScheduleState', 'Iteration', 'Release', 'DeveloperAssigned1', 'SystemDesignSuggestions' ], //fields to fetch
+            //       limit: Infinity,
+            //       order: 'Rank',
+            //       requestOptions: {} //optional additional options to pass through to request
+            //   };
+            //   restApi.query(rallyReqBody).then(function(result) {
+            //     pg.connect(process.env.DATABASE_URL, function(err, client) {
+            //       if (err) throw err;
+            //       console.log('Connected to postgres! Getting schemas...');
 
-                  client
-                    .query('INSERT INTO user (username, apiKey) VALUES (\''+username+'\',\''+tokens[1]+'\') ON CONFLICT (username) DO UPDATE user SET apiKey = '+tokens[1]+' WHERE username = '+username+';')
-                    .on('end', function() { 
-                      redisClient.set("username", tokens[1]);
-                      client.end(); 
-                    })
-                });
-              }).fail(function(errors) {
-                json.message = 'Invalid API Key';
-                res.send(json);
-              });
-            }else{
-              json.message = 'Use format: /rally register [API_KEY]';
-              res.send(json);
-            }
+            //       client
+            //         .query('INSERT INTO user (username, apiKey) VALUES (\''+username+'\',\''+tokens[1]+'\') ON CONFLICT (username) DO UPDATE user SET apiKey = '+tokens[1]+' WHERE username = '+username+';')
+            //         .on('end', function() { 
+            //           redisClient.set("username", tokens[1]);
+            //           client.end(); 
+            //         })
+            //     });
+            //   }).fail(function(errors) {
+            //     json.message = 'Invalid API Key';
+            //     res.send(json);
+            //   });
+            // }else{
+            //   json.message = 'Use format: /rally register [API_KEY]';
+            //   res.send(json);
+            // }
         }else if(tokens.length >= 2 && (type == 'US' || type == 'DE') && !isNaN(number)){
 
             //Get Connection API
 
-            redisClient.getAsync('username').then(function(res) {
-              if(res == null){
-                pg.connect(process.env.DATABASE_URL, function(err, client) {
-                  if (err) throw err;
-                  console.log('Connected to postgres! Getting schemas...');
+            // redisClient.getAsync('username').then(function(res) {
+            //   if(res == null){
+            //     pg.connect(process.env.DATABASE_URL, function(err, client) {
+            //       if (err) throw err;
+            //       console.log('Connected to postgres! Getting schemas...');
 
-                  client
-                    .query('SELECT apiKey FROM user WHERE username = '+username+';')
-                    .on('row', function(row) {
-                      if(row.apiKey && row.apiKey != null){
-                        redisClient.set("username", row.apiKey);
-                        rallyConnectionInfo.apiKey = row.apiKey;
-                      }
-                    });
-                });
-              }else{
-                rallyConnectionInfo.apiKey = res;
-              }
-            });
+            //       client
+            //         .query('SELECT apiKey FROM user WHERE username = '+username+';')
+            //         .on('row', function(row) {
+            //           if(row.apiKey && row.apiKey != null){
+            //             redisClient.set("username", row.apiKey);
+            //             rallyConnectionInfo.apiKey = row.apiKey;
+            //           }
+            //         });
+            //     });
+            //   }else{
+            //     rallyConnectionInfo.apiKey = res;
+            //   }
+            // });
 
             var restApi = rally(rallyConnectionInfo);
 
