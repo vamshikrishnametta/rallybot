@@ -19,7 +19,7 @@ pg.connect(process.env.DATABASE_URL, function(err, client) {
                   //   .query('CREATE TABLE user ( username varchar(255) PRIMARY KEY, apiKey varchar(64) NOT NULL );')
                   //   .on('end', function() { client.end(); })
 
-                  client.query('CREATE TABLE user ( username varchar(255) PRIMARY KEY, apiKey varchar(64) NOT NULL );', 
+                  client.query('CREATE TABLE IF NOT EXISTS integration_user ( username varchar(255) PRIMARY KEY, apiKey varchar(64) NOT NULL );', 
                     function(err, result) {
                       if(err) {
                         return console.error('error running query', err);
@@ -114,7 +114,7 @@ app.post('/rallyslash', function(req, res){
             //       console.log('Connected to postgres! Getting schemas...');
 
             //       client
-            //         .query('INSERT INTO user (username, apiKey) VALUES (\''+username+'\',\''+tokens[1]+'\') ON CONFLICT (username) DO UPDATE user SET apiKey = '+tokens[1]+' WHERE username = '+username+';')
+            //         .query('INSERT INTO integration_user (username, apiKey) VALUES (\''+username+'\',\''+tokens[1]+'\') ON CONFLICT (username) DO UPDATE integration_user SET apiKey = '+tokens[1]+' WHERE username = '+username+';')
             //         .on('end', function() { 
             //           redisClient.set("username", tokens[1]);
             //           client.end(); 
@@ -139,7 +139,7 @@ app.post('/rallyslash', function(req, res){
             //       console.log('Connected to postgres! Getting schemas...');
 
             //       client
-            //         .query('SELECT apiKey FROM user WHERE username = '+username+';')
+            //         .query('SELECT apiKey FROM integration_user WHERE username = '+username+';')
             //         .on('row', function(row) {
             //           if(row.apiKey && row.apiKey != null){
             //             redisClient.set("username", row.apiKey);
