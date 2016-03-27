@@ -113,7 +113,7 @@ app.post('/rallyslash', function(req, res){
               }
             res.send(json);
         }else if(tokens.length >= 1 && tokens[0] == 'register'){
-            if(tokens.length == 2){
+            if(tokens.length == 2  && (tokens[tokens.length - 1] != 'public' && tokens[tokens.length - 1] != 'p')){
               console.log('Found 2 tokens');
               rallyConnectionInfo.apiKey = tokens[1];
               var restApi = rally(rallyConnectionInfo);
@@ -318,7 +318,7 @@ app.post('/rallyslash', function(req, res){
             // console.log(tokens[0].substr(0,2) );
             // console.log('US-'+tokens[0].substring(2,tokens[0].length - 1));
             json.text = 'Use format: /rally US123 action'
-            
+
             res.send(json);
         }
 
