@@ -83,13 +83,11 @@ app.post('/rallyslash', function(req, res){
 
     if(req.body.token == process.env.BOT_TOKEN){
         var message = ' ';
-        var json = json = {text: message, username: 'rallybot', response_type: 'ephemeral'};
+        var json = json = {'text': message, 'username': 'rallybot', 'response_type': 'ephemeral'};
         var text = req.body.text;
         var username = req.body.user_name;
         console.log(req.body);
         var tokens = text.split(" ");
-        console.log('Tokens: '+tokens.length);
-        console.log(tokens);
         var type = '';
         var number = 0;
         if(tokens.length >= 1){
@@ -97,9 +95,7 @@ app.post('/rallyslash', function(req, res){
           var number = tokens[0].substring(2,tokens[0].length);
         }
         if(tokens.length >= 1 && tokens[0] == 'help'){
-            console.log('Help response');
-            json.message = 'Use format: /rally US123 action\n\n Possible Actions: \n status \n description \n link \n notes \n design';
-            console.log('Help response: '+json.message);
+            json.text = 'Use format: /rally US123 action\n\n Possible Actions: \n status \n description \n link \n notes \n design';
             res.send(json);
         }else if(tokens.length >= 1 && tokens[0] == 'register'){
             if(tokens.length == 2){
@@ -135,9 +131,7 @@ app.post('/rallyslash', function(req, res){
                 res.send(json);
               });
             }else{
-              console.log('Use format: /rally register [API_KEY]');
-              json.message = 'Use format: /rally register [API_KEY]';
-              console.log('Sending Message: '+json.message);
+              json.text = 'Use format: /rally register [API_KEY]';
               res.send(json);
             }
         }else if(tokens.length >= 2 && (type == 'US' || type == 'DE') && !isNaN(number)){
@@ -231,7 +225,6 @@ app.post('/rallyslash', function(req, res){
         }else{
             // console.log(tokens[0].substr(0,2) );
             // console.log('US-'+tokens[0].substring(2,tokens[0].length - 1));
-            console.log('Bad format');
             json.text = 'Use format: /rally US123 action'
             res.send(json);
         }
