@@ -101,6 +101,7 @@ app.post('/rallyslash', function(req, res){
         var tokens = text.split(" ");
         var type = '';
         var number = 0;
+        var RALLYID = '';
         if(tokens.length >= 1){
           var type = tokens[0].substr(0,2).toUpperCase();
           var number = tokens[0].substring(2,tokens[0].length);
@@ -152,7 +153,7 @@ app.post('/rallyslash', function(req, res){
               res.send(json);
             }
         }else if(tokens.length >= 2 && (type == 'US' || type == 'DE') && !isNaN(number)){
-
+            RALLYID = tokens[0].toUpperCase();
             //Get Connection API
 
             redisClient.getAsync('username').then(function(res) {
@@ -179,7 +180,7 @@ app.post('/rallyslash', function(req, res){
 
             var rallyReqBody = {
                 type: 'hierarchicalrequirement',
-                query: queryUtils.where('FormattedID', '=', tokens[0]),
+                query: queryUtils.where('FormattedID', '=', RALLYID),
                 fetch: ['FormattedID', 'Name', 'Description', 'Notes', 'CommExOwner', 'UserStoryStatus', 'CommexITOwner', 'AssignedArchitect', 'DesignState', 'Blocked', 'BlockedReason', 'ScheduleState', 'Iteration', 'Release', 'DeveloperAssigned1', 'SystemDesignSuggestions' ], //fields to fetch
                 limit: Infinity,
                 order: 'Rank',
@@ -199,7 +200,7 @@ app.post('/rallyslash', function(req, res){
                   //console.log(result.Results);
                   if(tokens[1] == 'description' || tokens[1] == 'd'){
                       // json.message = result.Object.Description;
-                      json.text = '*'+tokens[0]+' - '+result.Results[0].Name+':* \n>>>'+removeHTML(result.Results[0].Description);
+                      json.text = '*'+RALLYID+' - '+result.Results[0].Name+':* \n>>>'+removeHTML(result.Results[0].Description);
 
                   }else if(tokens[1] == 'notes' || tokens[1] == 'n'){
                       // json.message = result.Object.Description;
@@ -229,7 +230,7 @@ app.post('/rallyslash', function(req, res){
                         });
 
                       }else{
-                        json.text = '*'+tokens[0]+' - '+result.Results[0].Name+':* \n_Notes_\n>>>'+removeHTML(result.Results[0].Notes);
+                        json.text = '*'+RALLYID+' - '+result.Results[0].Name+':* \n_Notes_\n>>>'+removeHTML(result.Results[0].Notes);
                         //res.send(json);
                       }
                       
@@ -251,7 +252,7 @@ app.post('/rallyslash', function(req, res){
                         restApi.update(rallyUpdateBody).then(function(result) {
                           console.log('Update Success');
                           console.log(result);
-                          json.text = '*'+tokens[0]+' - '+result.Object.Name+':* Design State is now _5. Design Complete_';
+                          json.text = '*'+RALLYID+' - '+result.Object.Name+':* Design State is now _5. Design Complete_';
                           res.send(json);
                         }).fail(function(errors) {
                           console.log('Update Error');
@@ -259,13 +260,13 @@ app.post('/rallyslash', function(req, res){
                         });
 
                       }else{
-                        json.text = '*'+tokens[0]+' - '+result.Results[0].Name+':* \n_Design_\n>>>'+removeHTML(result.Results[0].c_SystemDesignSuggestions);
+                        json.text = '*'+RALLYID+' - '+result.Results[0].Name+':* \n_Design_\n>>>'+removeHTML(result.Results[0].c_SystemDesignSuggestions);
                         //res.send(json);
                       }
 
                   }else if(tokens[1] == 'status' || tokens[1] == 's'){
                       // json.message = result.Object.Description;
-                      json.text = '*'+tokens[0]+' - '+result.Results[0].Name+':*';
+                      json.text = '*'+RALLYID+' - '+result.Results[0].Name+':*';
                       var release = (typeof result.Results[0].Release != 'undefined' && result.Results[0].Release != null)?result.Results[0].Release.Name:'Unscheduled';
                       json.text += '\n> *Release:* '+release;
                       var iter = (typeof result.Results[0].Release != 'undefined' && result.Results[0].Iteration != null)?result.Results[0].Iteration.Name:'Unscheduled';
@@ -279,7 +280,7 @@ app.post('/rallyslash', function(req, res){
                       json.text += '\n> *Development Status:* '+result.Results[0].ScheduleState;
 
                   }else{
-                      json.text = 'Here is a link to the story: <https://rally1.rallydev.com/#/'+process.env.RALLY_WORKSPACE+'/search?keywords='+tokens[0]+'|'+tokens[0]+'>';
+                      json.text = 'Here is a link to the story: <https://rally1.rallydev.com/#/'+process.env.RALLY_WORKSPACE+'/search?keywords='+RALLYID+'|'+tokens[0]+'>';
                   }
 
                   if(tokens.length >= 2 && (tokens[tokens.length - 1] == 'public' || tokens[tokens.length - 1] == 'p')){
