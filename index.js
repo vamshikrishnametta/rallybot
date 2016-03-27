@@ -202,7 +202,36 @@ app.post('/rallyslash', function(req, res){
 
                   }else if(tokens[1] == 'notes' || tokens[1] == 'n'){
                       // json.message = result.Object.Description;
-                      json.text = '*'+tokens[0]+' - '+result.Results[0].Name+':* \n_Notes_\n>>>'+removeHTML(result.Results[0].Notes);
+                      if(tokens.length >= 3){
+                        updateCall = true;
+                        console.log('Trying to Update');
+                        tokens.shift();
+                        tokens.shift();
+                        var d = new Date();
+                        var notes = '<br /><br />'+d.getFullYear()+'-'+d.getMonth()+'-'+d.getDate()+' - '+username+': '+tokens.join(' ');
+                        var rallyUpdateBody = {
+                          ref: result.Results[0],
+                          data: {
+                              Notes: result.Results[0].Notes + notes;
+                          },
+                          fetch: ['Name']
+                        };
+                        //console.log(rallyUpdateBody);
+                        restApi.update(rallyUpdateBody).then(function(result) {
+                          console.log('Update Success');
+                          console.log(result);
+                          json.text = '*'+tokens[0]+' - '+result.Object.Name+':* Sucecssfully added notes:\n'+notes;
+                          res.send(json);
+                        }).fail(function(errors) {
+                          console.log('Update Error');
+                            console.log(errors);
+                        });
+
+                      }else{
+                        json.text = '*'+tokens[0]+' - '+result.Results[0].Name+':* \n_Notes_\n>>>'+removeHTML(result.Results[0].Notes);
+                        //res.send(json);
+                      }
+                      
 
                   }else if(tokens[1] == 'design' || tokens[1] == 'sds'){
                       // json.message = result.Object.Description;
@@ -221,7 +250,7 @@ app.post('/rallyslash', function(req, res){
                         restApi.update(rallyUpdateBody).then(function(result) {
                           console.log('Update Success');
                           console.log(result);
-                          json.text = '*'+tokens[0]+' - '+result.Name+':* Design State is now _5. Design Complete_';
+                          json.text = '*'+tokens[0]+' - '+result.Object.Name+':* Design State is now _5. Design Complete_';
                           res.send(json);
                         }).fail(function(errors) {
                           console.log('Update Error');
