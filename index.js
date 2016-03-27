@@ -119,6 +119,8 @@ app.post('/rallyslash', function(req, res){
                     .on('end', function() { 
                       redisClient.set("username", tokens[1]);
                       client.end(); 
+                      json.message = 'Successfully registered '+username+' with API Key: '+tokens[1]+' ';
+                      res.send(json);
                     })
                 });
               }).fail(function(errors) {
