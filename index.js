@@ -213,13 +213,14 @@ app.post('/rallyslash', function(req, res){
                         var rallyUpdateBody = {
                           ref: result.Results[0],
                           data: {
-                              DesignState: '5. Design Complete'
+                              c_DesignState: '5. Design Complete'
                           },
                           fetch: ['Name']
                         };
                         //console.log(rallyUpdateBody);
                         restApi.update(rallyUpdateBody).then(function(result) {
                           console.log('Update Success');
+                          console.log(result);
                           json.text = '*'+tokens[0]+' - '+result.Name+':* Design State is now _5. Design Complete_';
                           res.send(json);
                         }).fail(function(errors) {
