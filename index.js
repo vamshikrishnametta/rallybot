@@ -152,7 +152,7 @@ app.post('/rallyslash', function(req, res){
                 res.send(json);
               });
             }else{
-              json.text = '*Please Register Your Rally Account*\n1. Login to your <https://rally1.rallydev.com/#/'+process.env.RALLY_WORKSPACE+'/dashboard|Rally Workspace>\n2. Click the follwing link to <https://rally1.rallydev.com/login/accounts/index.html#/keys|Register an API Key>\n3. Copy the newly created API Key\n4. Use the following command in Slack: /rally register [API_KEY]';
+              json.text = '*Please Register Your Rally Account in Slack*\n1. Login to your <https://rally1.rallydev.com/#/'+process.env.RALLY_WORKSPACE+'/dashboard|Rally Workspace>\n2. Click the follwing link to <https://rally1.rallydev.com/login/accounts/index.html#/keys|Register an API Key>\n3. Copy the newly created API Key\n4. Use the following command in Slack: /rally register [API_KEY]';
               if(tokens.length >= 2 && (tokens[tokens.length - 1] == 'public' || tokens[tokens.length - 1] == 'p')){
                   json.response_type = 'in_channel';
               }
@@ -238,7 +238,7 @@ app.post('/rallyslash', function(req, res){
                         });
 
                       }else if(!registered){
-                        json.text = '*Please Register Your Rally Account*\n1. Login to your <https://rally1.rallydev.com/#/'+process.env.RALLY_WORKSPACE+'/dashboard|Rally Workspace>\n2. Click the follwing link to <https://rally1.rallydev.com/login/accounts/index.html#/keys|Register an API Key>\n3. Copy the newly created API Key\n4. Use the following command in Slack: /rally register [API_KEY]';
+                        json.text = '*Please Register Your Rally Account in Slack*\n1. Login to your <https://rally1.rallydev.com/#/'+process.env.RALLY_WORKSPACE+'/dashboard|Rally Workspace>\n2. Click the follwing link to <https://rally1.rallydev.com/login/accounts/index.html#/keys|Register an API Key>\n3. Copy the newly created API Key\n4. Use the following command in Slack: /rally register [API_KEY]';
                       }else{
                         json.text = '*'+RALLYID+' - '+result.Results[0].Name+':* \n_Notes_\n>>>'+removeHTML(result.Results[0].Notes);
                         //res.send(json);
@@ -270,7 +270,7 @@ app.post('/rallyslash', function(req, res){
                         });
 
                       }else if(!registered){
-                        json.text = '*Please Register Your Rally Account*\n1. Login to your <https://rally1.rallydev.com/#/'+process.env.RALLY_WORKSPACE+'/dashboard|Rally Workspace>\n2. Click the follwing link to <https://rally1.rallydev.com/login/accounts/index.html#/keys|Register an API Key>\n3. Copy the newly created API Key\n4. Use the following command in Slack: /rally register [API_KEY]';
+                        json.text = '*Please Register Your Rally Account in Slack*\n1. Login to your <https://rally1.rallydev.com/#/'+process.env.RALLY_WORKSPACE+'/dashboard|Rally Workspace>\n2. Click the follwing link to <https://rally1.rallydev.com/login/accounts/index.html#/keys|Register an API Key>\n3. Copy the newly created API Key\n4. Use the following command in Slack: /rally register [API_KEY]';
                       }else{
                         json.text = '*'+RALLYID+' - '+result.Results[0].Name+':* \n_Design_\n>>>'+removeHTML(result.Results[0].c_SystemDesignSuggestions);
                         //res.send(json);
