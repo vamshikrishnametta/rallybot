@@ -18,7 +18,7 @@ pg.connect(process.env.DATABASE_URL, function(err, client) {
                   client
                     .query('CREATE TABLE user ('+
                            '   username    varchar(255) CONSTRAINT firstkey PRIMARY KEY,'+
-                           '   apiKey      varchar(64) NOT NULL,'+
+                           '   apiKey      varchar(64) NOT NULL'+
                           ');')
                     .on('end', function() { client.end(); })
                 });
@@ -68,7 +68,6 @@ var removeHTML = function(inText){
   outText = outText.replace(/<\/span>/g, '');
   return outText;
 }
-
 
 app.post('/rallyslash', function(req, res){
   
