@@ -148,7 +148,7 @@ app.post('/rallyslash', function(req, res){
             }
         }else if(tokens.length >= 2 && (type == 'US' || type == 'DE') && !isNaN(number)){
 
-            Get Connection API
+            //Get Connection API
 
             redisClient.getAsync('username').then(function(res) {
               if(res == null){
