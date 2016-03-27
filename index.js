@@ -95,7 +95,7 @@ app.post('/rallyslash', function(req, res){
           var number = tokens[0].substring(2,tokens[0].length);
         }
         if(tokens.length >= 1 && tokens[0] == 'help'){
-            json.text = 'Use format: /rally US123 action\n\n Possible Actions: \n status \n description \n link \n notes \n design';
+            json.text = 'Use format: /rally US123 action\n\n Possible Actions: \n status \n description \n link \n notes \n design \n\nRegister your API Key to perform updates by using /rally register';
             res.send(json);
         }else if(tokens.length >= 1 && tokens[0] == 'register'){
             if(tokens.length == 2){
@@ -131,7 +131,7 @@ app.post('/rallyslash', function(req, res){
                 res.send(json);
               });
             }else{
-              json.text = 'Use format: /rally register [API_KEY]';
+              json.text = '1. Login to your <https://rally1.rallydev.com/#/'+process.env.RALLY_WORKSPACE+'/|Rally Workspace>\n2. Click the follwing link to <https://rally1.rallydev.com/login/accounts/index.html#/keys|Register an API Key>\n3. Copy the newly created API Key\n4. Use the following command in Slack: /rally register [API_KEY]';
               res.send(json);
             }
         }else if(tokens.length >= 2 && (type == 'US' || type == 'DE') && !isNaN(number)){
