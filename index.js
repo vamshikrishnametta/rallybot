@@ -99,6 +99,7 @@ app.post('/rallyslash', function(req, res){
         if(tokens.length >= 1 && tokens[0] == 'help'){
             console.log('Help response');
             json.message = 'Use format: /rally US123 action\n\n Possible Actions: \n status \n description \n link \n notes \n design';
+            console.log('Help response: '+json.message);
             res.send(json);
         }else if(tokens.length >= 1 && tokens[0] == 'register'){
             if(tokens.length == 2){
@@ -136,6 +137,7 @@ app.post('/rallyslash', function(req, res){
             }else{
               console.log('Use format: /rally register [API_KEY]');
               json.message = 'Use format: /rally register [API_KEY]';
+              console.log('Sending Message: '+json.message);
               res.send(json);
             }
         }else if(tokens.length >= 2 && (type == 'US' || type == 'DE') && !isNaN(number)){
