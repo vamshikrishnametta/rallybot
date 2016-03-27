@@ -212,7 +212,7 @@ app.post('/rallyslash', function(req, res){
                         restApi.update({
                           ref: result.Results[0].Object,
                           data: {
-                              DesignState: '5. Design Complete'
+                              c_DesignState: '5. Design Complete'
                           },
                           fetch: ['Name']
                         }).then(function(result) {
