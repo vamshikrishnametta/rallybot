@@ -95,7 +95,7 @@ app.post('/rallyslash', function(req, res){
     if(req.body.token == process.env.BOT_TOKEN){
         var message = ' ';
         var json = json = {'text': message, 'username': 'rallybot', 'response_type': 'ephemeral'};
-        var register_text = '*Please Register Your Rally Account in Slack*\n1. Login to your <https://rally1.rallydev.com/#/'+process.env.RALLY_WORKSPACE+'/dashboard|Rally Workspace>\n2. Click the following link to <https://rally1.rallydev.com/login/accounts/index.html#/keys|Register an API Key> (click "Create New API Key")\n3. Copy the newly created API Key\n4. Use the following command in Slack: /rally register [API_KEY]';
+        var register_text = '*Please Register Your Rally Account in Slack*\n1. Login to your <https://rally1.rallydev.com/#/'+process.env.RALLY_WORKSPACE+'/dashboard|Rally Workspace>\n2. Click the following link to <https://rally1.rallydev.com/login/accounts/index.html#/keys/new|Register an API Key> \n3. Copy the newly created API Key\n4. Use the following command in Slack: /rally register [API_KEY]';
         var text = req.body.text;
         var username = req.body.user_name;
         console.log(req.body);
