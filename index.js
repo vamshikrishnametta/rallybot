@@ -115,15 +115,26 @@ app.post('/rallyslash', function(req, res){
                   if (err) throw err;
                   console.log('Connected to postgres! Creating user');
 
-                  client
-                    .query('INSERT INTO integration_user (username, apiKey) VALUES (\''+username+'\',\''+tokens[1]+'\') ON CONFLICT (username) DO UPDATE integration_user SET apiKey = '+tokens[1]+' WHERE username = '+username+';')
-                    .on('end', function() { 
-                      redisClient.set("username", tokens[1]);
-                      client.end(); 
+                  // client
+                  //   .query('INSERT INTO integration_user (username, apiKey) VALUES (\''+username+'\',\''+tokens[1]+'\') ON CONFLICT (username) DO UPDATE integration_user SET apiKey = '+tokens[1]+' WHERE username = '+username+';')
+                  //   .on('end', function() { 
+                      
+                  //   })
+                  client.query('INSERT INTO integration_user (username, apiKey) VALUES (\''+username+'\',\''+tokens[1]+'\') ON CONFLICT (username) DO UPDATE integration_user SET apiKey = '+tokens[1]+' WHERE username = '+username+';', 
+                    function(err, result) {
+                      if(err) {
+                        json.text = 'Unable to save API Key';
+                        res.send(json);
+                        client.end();
+                        return console.error('error running query', err);
+                      
+                      }
                       console.log('Successfully registered '+username+' with API Key: '+tokens[1]+' ');
-                      json.message = 'Successfully registered '+username+' with API Key: '+tokens[1]+' ';
+                      json.text = 'Successfully registered '+username+' with API Key: '+tokens[1]+' ';
+                      redisClient.set("username", tokens[1]);
+                      client.end();
                       res.send(json);
-                    })
+                    });
                 });
               }).fail(function(errors) {
                 console.log('Invalid API Key');
