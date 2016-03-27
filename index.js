@@ -74,7 +74,7 @@ app.post('/rallyslash', function(req, res){
             var rallyReqBody = {
                 type: 'hierarchicalrequirement',
                 query: queryUtils.where('FormattedID', '=', tokens[0]),
-                fetch: ['FormattedID', 'Name', 'Description', 'Notes', 'CommExOwner', 'UserStoryStatus', 'CommexITOwner', 'AssignedArchitect', 'DesignState', 'Blocked', 'BlockedReason', 'ScheduleState', 'Itertion', 'Release', 'DeveloperAssigned1', 'SystemDesignSuggestions' ], //fields to fetch
+                fetch: ['FormattedID', 'Name', 'Description', 'Notes', 'CommExOwner', 'UserStoryStatus', 'CommexITOwner', 'AssignedArchitect', 'DesignState', 'Blocked', 'BlockedReason', 'ScheduleState', 'Iteration', 'Release', 'DeveloperAssigned1', 'SystemDesignSuggestions' ], //fields to fetch
                 limit: Infinity,
                 order: 'Rank',
                 requestOptions: {} //optional additional options to pass through to request
