@@ -203,7 +203,7 @@ app.post('/rallyslash', function(req, res){
                       // json.message = result.Object.Description;
                       
 
-                      if(tokens.length >= 3 && (tokens[1] == 'design' || tokens[1] == 'sds') && (tokens[2] == 'complete' || tokens[2] == 'c')){
+                      if(tokens.length >= 3 && (tokens[2] == 'complete' || tokens[2] == 'c')){
 
                         restApi.update({
                           ref: result.Results[0].Object,
