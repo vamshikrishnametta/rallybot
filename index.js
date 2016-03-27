@@ -212,7 +212,7 @@ app.post('/rallyslash', function(req, res){
                         var rallyUpdateBody = {
                           ref: result.Results[0],
                           data: {
-                              Notes: result.Results[0].Notes + notes;
+                              Notes: result.Results[0].Notes + notes
                           },
                           fetch: ['Name']
                         };
