@@ -193,6 +193,7 @@ app.post('/rallyslash', function(req, res){
 
               // console.log(rallyReqBody);
               restApi.query(rallyReqBody).then(function(result) {
+                  var updateCall = false;
                   //console.log(result);
                   //console.log(result.Results);
                   if(tokens[1] == 'description' || tokens[1] == 'd'){
@@ -207,7 +208,7 @@ app.post('/rallyslash', function(req, res){
                       // json.message = result.Object.Description;
                       
                       if(tokens.length >= 3 && (tokens[2] == 'complete' || tokens[2] == 'c')){
-
+                        updateCall = true;
                         console.log('Trying to Update');
                         var rallyUpdateBody = {
                           ref: result.Results[0],
@@ -228,7 +229,7 @@ app.post('/rallyslash', function(req, res){
 
                       }else{
                         json.text = '*'+tokens[0]+' - '+result.Results[0].Name+':* \n_Design_\n>>>'+removeHTML(result.Results[0].c_SystemDesignSuggestions);
-                        res.send(json);
+                        //res.send(json);
                       }
 
                   }else if(tokens[1] == 'status' || tokens[1] == 's'){
@@ -252,9 +253,13 @@ app.post('/rallyslash', function(req, res){
 
                   if(tokens.length >= 2 && (tokens[tokens.length - 1] == 'public' || tokens[tokens.length - 1] == 'p')){
                       json.response_type = 'in_channel';
+                      
                   }
 
-                  res.send(json);
+                  if(!updateCall){
+                      res.send(json);
+                  }
+                  
                   // request('http://google.com', function (error, response, json) {
                   //   if (!error && response.statusCode == 200) {
                   //     console.log('Sent back to Slack'); // Print the google web page.
