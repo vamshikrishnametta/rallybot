@@ -155,7 +155,7 @@ app.post('/rallyslash', function(req, res){
         }else if(tokens.length >= 2 && (type == 'US' || type == 'DE') && !isNaN(number)){
             RALLYID = tokens[0].toUpperCase();
             //Get Connection API
-
+            var registered = false;
             redisClient.getAsync('username').then(function(res) {
               if(res == null){
                 pg.connect(process.env.DATABASE_URL, function(err, client) {
@@ -168,11 +168,13 @@ app.post('/rallyslash', function(req, res){
                       if(row.apiKey && row.apiKey != null){
                         redisClient.set("username", row.apiKey);
                         rallyConnectionInfo.apiKey = row.apiKey;
+                        registered = true;
                       }
                     });
                 });
               }else{
                 rallyConnectionInfo.apiKey = res;
+                registered = true;
               }
             });
 
@@ -204,7 +206,7 @@ app.post('/rallyslash', function(req, res){
 
                   }else if(tokens[1] == 'notes' || tokens[1] == 'n'){
                       // json.message = result.Object.Description;
-                      if(tokens.length >= 3){
+                      if(registered && tokens.length >= 3){
                         updateCall = true;
                         console.log('Trying to Update');
                         tokens.shift();
@@ -229,6 +231,8 @@ app.post('/rallyslash', function(req, res){
                             console.log(errors);
                         });
 
+                      }else if(!registered){
+                        json.text = '*Please Register Your Rally Account*\n1. Login to your <https://rally1.rallydev.com/#/'+process.env.RALLY_WORKSPACE+'/|Rally Workspace>\n2. Click the follwing link to <https://rally1.rallydev.com/login/accounts/index.html#/keys|Register an API Key>\n3. Copy the newly created API Key\n4. Use the following command in Slack: /rally register [API_KEY]';
                       }else{
                         json.text = '*'+RALLYID+' - '+result.Results[0].Name+':* \n_Notes_\n>>>'+removeHTML(result.Results[0].Notes);
                         //res.send(json);
@@ -238,7 +242,7 @@ app.post('/rallyslash', function(req, res){
                   }else if(tokens[1] == 'design' || tokens[1] == 'sds'){
                       // json.message = result.Object.Description;
                       
-                      if(tokens.length >= 3 && (tokens[2] == 'complete' || tokens[2] == 'c')){
+                      if(registered && tokens.length >= 3 && (tokens[2] == 'complete' || tokens[2] == 'c')){
                         updateCall = true;
                         console.log('Trying to Update');
                         var rallyUpdateBody = {
@@ -259,6 +263,8 @@ app.post('/rallyslash', function(req, res){
                             console.log(errors);
                         });
 
+                      }else if(!registered){
+                        json.text = '*Please Register Your Rally Account*\n1. Login to your <https://rally1.rallydev.com/#/'+process.env.RALLY_WORKSPACE+'/|Rally Workspace>\n2. Click the follwing link to <https://rally1.rallydev.com/login/accounts/index.html#/keys|Register an API Key>\n3. Copy the newly created API Key\n4. Use the following command in Slack: /rally register [API_KEY]';
                       }else{
                         json.text = '*'+RALLYID+' - '+result.Results[0].Name+':* \n_Design_\n>>>'+removeHTML(result.Results[0].c_SystemDesignSuggestions);
                         //res.send(json);
