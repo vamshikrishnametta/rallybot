@@ -219,7 +219,7 @@ app.post('/rallyslash', function(req, res){
                         tokens.shift();
                         tokens.shift();
                         var d = new Date();
-                        var notes = d.toDateString()+' - '+username+' [via Slack]: '+tokens.join(' ');
+                        var notes = '<strong>'+d.toDateString()+' - '+username+' [via Slack]: </strong> '+tokens.join(' ');
                         var rallyUpdateBody = {
                           ref: result.Results[0],
                           data: {
